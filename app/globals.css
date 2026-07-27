@@ -1,0 +1,15 @@
+/* Minimal global reset. Each design version (v1/v2) brings its own tokens
+   and component styles from app/v1/v1.css and app/v2/v2.css. */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100%;
+}
