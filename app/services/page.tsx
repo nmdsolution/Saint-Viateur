@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 
 function Ico({ children }: { children: ReactNode }) {
@@ -292,7 +291,6 @@ const TECHNICAL_PLATFORM: { icon: ReactNode; name: string }[] = [
 export default function ServicesPage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="services" />
 
       <section className="page-hero">

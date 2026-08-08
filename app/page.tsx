@@ -1,14 +1,12 @@
 import Image from "next/image";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 import { CountUp } from "@/app/components/CountUp";
 
 export default function HomePage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="" />
 
       <section className="hero">

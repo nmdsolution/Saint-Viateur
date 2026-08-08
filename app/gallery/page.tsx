@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 
 function Ico({ children }: { children: ReactNode }) {
@@ -27,7 +26,6 @@ const PHOTOS: { label: string; cat: string; zoom: string; tall?: boolean }[] = [
 export default function GalleryPage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="gallery" />
 
       <section className="page-hero">
