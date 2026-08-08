@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./site.css";
+import { SiteMotion } from "@/app/components/SiteMotion";
+import { Chatbot } from "@/app/components/Chatbot";
 
 export const metadata: Metadata = {
   title: "Clinique Médicale Saint Viateur",
@@ -14,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body>
+        <SiteMotion />
+        {children}
+        <Chatbot />
+      </body>
     </html>
   );
 }

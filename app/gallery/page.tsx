@@ -24,11 +24,11 @@ const PHOTOS: { label: string; cat: string; zoom: string; tall?: boolean }[] = [
   { label: "Équipement", cat: "equip", zoom: "Photo — Équipement" },
 ];
 
-export default function V2GalleryPage() {
+export default function GalleryPage() {
   return (
     <>
-      <ProvisionalBanner version="v2" />
-      <Header version="v2" active="gallery" />
+      <ProvisionalBanner />
+      <Header active="gallery" />
 
       <section className="page-hero">
         <div className="blob blob-a" />
@@ -102,7 +102,7 @@ export default function V2GalleryPage() {
         </div>
       </section>
 
-      <Footer version="v2" />
+      <Footer />
     </>
   );
 }

@@ -1,17 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { NAV_ITEMS, pathFor, type Slug, type Version } from "@/app/lib/nav";
+import { NAV_ITEMS, pathFor, type Slug } from "@/app/lib/nav";
 
-export function Header({
-  version,
-  active,
-}: {
-  version: Version;
-  active: Slug;
-}) {
-  const otherVersion: Version = version === "v1" ? "v2" : "v1";
-  const switchLabel = version === "v1" ? "Switch to V2" : "Switch to V1";
-
+export function Header({ active }: { active: Slug }) {
   return (
     <header className="site-header">
       <div className="brand">
@@ -32,7 +23,7 @@ export function Header({
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.slug || "home"}
-            href={pathFor(version, item.slug)}
+            href={pathFor(item.slug)}
             className={item.slug === active ? "active" : undefined}
           >
             {item.label}
@@ -41,12 +32,9 @@ export function Header({
       </nav>
       <div className="header-cta">
         <span className="emergency-strip">
-          {version === "v2" ? <span className="dot" /> : "☎"} Urgences 24h/24
+          <span className="dot" /> Urgences 24h/24
         </span>
         <button className="btn btn-primary btn-sm">Prendre RDV</button>
-        <Link href={pathFor(otherVersion, active)} className="btn btn-outline btn-sm">
-          {switchLabel}
-        </Link>
       </div>
     </header>
   );

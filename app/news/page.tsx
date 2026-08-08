@@ -63,11 +63,11 @@ const NEWS_ITEMS = [
   },
 ];
 
-export default function V2NewsPage() {
+export default function NewsPage() {
   return (
     <>
-      <ProvisionalBanner version="v2" />
-      <Header version="v2" active="news" />
+      <ProvisionalBanner />
+      <Header active="news" />
 
       <section className="page-hero">
         <div className="blob blob-a" />
@@ -126,7 +126,7 @@ export default function V2NewsPage() {
         </div>
       </section>
 
-      <Footer version="v2" />
+      <Footer />
     </>
   );
 }

@@ -289,11 +289,11 @@ const TECHNICAL_PLATFORM: { icon: ReactNode; name: string }[] = [
   },
 ];
 
-export default function V2ServicesPage() {
+export default function ServicesPage() {
   return (
     <>
-      <ProvisionalBanner version="v2" />
-      <Header version="v2" active="services" />
+      <ProvisionalBanner />
+      <Header active="services" />
 
       <section className="page-hero">
         <div className="blob blob-a" />
@@ -418,7 +418,7 @@ export default function V2ServicesPage() {
         </div>
       </section>
 
-      <Footer version="v2" />
+      <Footer />
     </>
   );
 }

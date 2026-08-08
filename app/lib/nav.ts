@@ -10,8 +10,6 @@ export const NAV_ITEMS = [
 
 export type Slug = (typeof NAV_ITEMS)[number]["slug"];
 
-export type Version = "v1" | "v2";
-
-export function pathFor(version: Version, slug: Slug): string {
-  return slug ? `/${version}/${slug}` : `/${version}`;
+export function pathFor(slug: Slug): string {
+  return slug ? `/${slug}` : "/";
 }

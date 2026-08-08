@@ -12,11 +12,11 @@ function Ico({ children }: { children: ReactNode }) {
   );
 }
 
-export default function V2ContactPage() {
+export default function ContactPage() {
   return (
     <>
-      <ProvisionalBanner version="v2" />
-      <Header version="v2" active="contact" />
+      <ProvisionalBanner />
+      <Header active="contact" />
 
       <section className="page-hero">
         <div className="blob blob-a" />
@@ -184,7 +184,7 @@ export default function V2ContactPage() {
         </div>
       </section>
 
-      <Footer version="v2" />
+      <Footer />
     </>
   );
 }

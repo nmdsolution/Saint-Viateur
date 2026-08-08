@@ -120,11 +120,11 @@ const FAQ_ITEMS = [
   },
 ];
 
-export default function V2PatientServicesPage() {
+export default function PatientServicesPage() {
   return (
     <>
-      <ProvisionalBanner version="v2" />
-      <Header version="v2" active="patient-services" />
+      <ProvisionalBanner />
+      <Header active="patient-services" />
 
       <section className="page-hero">
         <div className="blob blob-a" />
@@ -222,7 +222,7 @@ export default function V2PatientServicesPage() {
         </div>
       </section>
 
-      <Footer version="v2" />
+      <Footer />
     </>
   );
 }
