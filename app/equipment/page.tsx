@@ -104,11 +104,11 @@ const MARQUEE_ITEMS: { icon: ReactNode; label: string }[] = [
   },
 ];
 
-export default function V2EquipmentPage() {
+export default function EquipmentPage() {
   return (
     <>
-      <ProvisionalBanner version="v2" />
-      <Header version="v2" active="equipment" />
+      <ProvisionalBanner />
+      <Header active="equipment" />
 
       <section className="page-hero">
         <div className="blob blob-a" />
@@ -176,7 +176,7 @@ export default function V2EquipmentPage() {
         </div>
       </section>
 
-      <Footer version="v2" />
+      <Footer />
     </>
   );
 }
