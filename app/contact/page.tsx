@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 
 function Ico({ children }: { children: ReactNode }) {
@@ -15,7 +14,6 @@ function Ico({ children }: { children: ReactNode }) {
 export default function ContactPage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="contact" />
 
       <section className="page-hero">
