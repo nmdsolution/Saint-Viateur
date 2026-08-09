@@ -194,6 +194,98 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* PROVISIONAL: placeholder partner list (real institutions, no confirmed partnership) — replace with clinic's actual partners per todo.txt "Liste des partenaires" before launch */}
+      <section className="section section-soft">
+        <div className="container">
+          <Reveal index={0}>
+            <div className="section-header">
+              <span className="eyebrow">Nos partenaires</span>
+              <h2>Ils nous accompagnent au quotidien</h2>
+              <p>
+                Un réseau d&apos;institutions médicales et sanitaires en Côte
+                d&apos;Ivoire pour garantir à nos patients une prise en charge
+                complète et coordonnée.
+              </p>
+            </div>
+          </Reveal>
+          <div className="partners-grid">
+            <Reveal index={1}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 21V9l8-5 8 5v12" />
+                    <path d="M9 21v-6h6v6" />
+                    <path d="M12 7v4M10 9h4" />
+                  </svg>
+                </div>
+                <strong>Institut Pasteur de Côte d&apos;Ivoire</strong>
+                <p>Recherche, biologie médicale et référence en santé publique.</p>
+              </div>
+            </Reveal>
+            <Reveal index={2}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="16" rx="2" />
+                    <path d="M8 4v16M3 10h5M16 9v6M13 12h6" />
+                  </svg>
+                </div>
+                <strong>CHU de Cocody</strong>
+                <p>Centre hospitalier universitaire pour les prises en charge spécialisées.</p>
+              </div>
+            </Reveal>
+            <Reveal index={3}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10" />
+                    <path d="M9 11h2l1-2 2 4 1-2h2" />
+                  </svg>
+                </div>
+                <strong>PISAM</strong>
+                <p>Polyclinique Internationale Sainte Anne-Marie, partenaire pour les cas complexes.</p>
+              </div>
+            </Reveal>
+            <Reveal index={4}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2C9 6.5 6 10.5 6 14a6 6 0 0 0 12 0c0-3.5-3-7.5-6-12z" />
+                  </svg>
+                </div>
+                <strong>Croix-Rouge Côte d&apos;Ivoire</strong>
+                <p>Secours d&apos;urgence, sensibilisation et dons de sang.</p>
+              </div>
+            </Reveal>
+            <Reveal index={5}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 3h6l1 4H8z" />
+                    <path d="M8 7l-3 13h14L16 7" />
+                    <path d="M10 12h4" />
+                  </svg>
+                </div>
+                <strong>CNTS</strong>
+                <p>Centre National de Transfusion Sanguine — approvisionnement en produits sanguins.</p>
+              </div>
+            </Reveal>
+            <Reveal index={6}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+                    <path d="M9 12l2 2 4-4" />
+                  </svg>
+                </div>
+                <strong>Ordre National des Médecins de CI</strong>
+                <p>Encadrement déontologique et garantie de la qualité des soins.</p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       <Reveal index={0}>
         <div className="cta-band">
           <div>
