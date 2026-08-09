@@ -1,5 +1,3 @@
-"use client";
-
 import { Children, cloneElement, type CSSProperties, type ReactElement } from "react";
 
 /**

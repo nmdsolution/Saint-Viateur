@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 
 function Ico({ children }: { children: ReactNode }) {
@@ -107,7 +106,6 @@ const MARQUEE_ITEMS: { icon: ReactNode; label: string }[] = [
 export default function EquipmentPage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="equipment" />
 
       <section className="page-hero">

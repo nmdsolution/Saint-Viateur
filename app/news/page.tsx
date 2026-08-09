@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 
 function Ico({ children }: { children: ReactNode }) {
@@ -66,7 +65,6 @@ const NEWS_ITEMS = [
 export default function NewsPage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="news" />
 
       <section className="page-hero">

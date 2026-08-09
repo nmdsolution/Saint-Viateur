@@ -1,14 +1,12 @@
 import Image from "next/image";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
-import { ProvisionalBanner } from "@/app/components/ProvisionalBanner";
 import { Reveal } from "@/app/components/Reveal";
 import { CountUp } from "@/app/components/CountUp";
 
 export default function HomePage() {
   return (
     <>
-      <ProvisionalBanner />
       <Header active="" />
 
       <section className="hero">
@@ -202,7 +200,7 @@ export default function HomePage() {
             <h3>Besoin d&apos;un rendez-vous rapidement ?</h3>
             <p>Réservez en ligne ou contactez-nous directement sur WhatsApp.</p>
           </div>
-          <div style={{ display: "flex", gap: 12 }}>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <button
               className="btn"
               style={{ background: "#fff", color: "var(--color-primary-darker)", animation: "none" }}

@@ -208,6 +208,33 @@ export function SiteMotion() {
       formHandlers.push({ btn, handler });
     });
 
+    /* mobile nav toggle (hamburger <-> mobile-nav-panel) */
+    const navToggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+    const navPanel = document.querySelector<HTMLElement>(".mobile-nav-panel");
+    function closeMobileNav() {
+      if (!navToggle || !navPanel) return;
+      navToggle.classList.remove("is-open");
+      navPanel.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Ouvrir le menu");
+    }
+    function onNavToggleClick() {
+      if (!navToggle || !navPanel) return;
+      const isOpen = navToggle.classList.toggle("is-open");
+      navPanel.classList.toggle("is-open", isOpen);
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+    }
+    function onNavResize() {
+      if (innerWidth > 860) closeMobileNav();
+    }
+    const navPanelLinks = navPanel
+      ? Array.from(navPanel.querySelectorAll<HTMLElement>("a"))
+      : [];
+    navToggle?.addEventListener("click", onNavToggleClick);
+    navPanelLinks.forEach((link) => link.addEventListener("click", closeMobileNav));
+    addEventListener("resize", onNavResize);
+
     /* lightbox for placeholders marked data-zoom */
     const lightbox = document.querySelector<HTMLElement>(".lightbox");
     const frame = lightbox?.querySelector<HTMLElement>(".frame");
@@ -239,6 +266,9 @@ export function SiteMotion() {
       filterChips.forEach((chip) => chip.removeEventListener("click", onFilterClick));
       formHandlers.forEach(({ btn, handler }) => btn.removeEventListener("click", handler));
       zoomables.forEach((z) => z.removeEventListener("click", onZoomClick));
+      navToggle?.removeEventListener("click", onNavToggleClick);
+      navPanelLinks.forEach((link) => link.removeEventListener("click", closeMobileNav));
+      removeEventListener("resize", onNavResize);
     });
 
     return () => cleanups.forEach((fn) => fn());
