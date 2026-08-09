@@ -285,6 +285,13 @@ a { color: inherit; text-decoration: none; }
 .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .why-card { text-align: center; padding: 10px; }
 .why-card .icon-badge { margin: 0 auto 14px; }
+.partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.partner-card { text-align: center; padding: 28px 22px; }
+.partner-card .icon-badge { margin: 0 auto 14px; width: 52px; height: 52px; border-radius: 14px; }
+.partner-card strong { display: block; margin-bottom: 6px; font-size: 14.5px; }
+.partner-card p { font-size: 13px; color: var(--color-ink-soft); margin: 0; line-height: 1.5; }
+.partner-logo { width: 52px; height: 52px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; }
+.partner-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .cta-band {
   position: relative; overflow: hidden;
   background: linear-gradient(120deg, var(--color-primary-darker), var(--color-primary-dark), var(--color-primary));
@@ -478,7 +485,7 @@ html.js .reveal.in-view { opacity: 1; transform: none; }
 @media (max-width: 980px) {
   .hero { grid-template-columns: 1fr; padding: 40px 24px 56px; }
   .section { padding: 56px 24px; }
-  .services-grid, .service-grid, .gallery-grid, .news-grid, .news-full-grid, .equip-grid, .specialty-list { grid-template-columns: repeat(2, 1fr) !important; }
+  .services-grid, .service-grid, .gallery-grid, .news-grid, .news-full-grid, .equip-grid, .specialty-list, .partners-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .why-grid, .contact-grid { grid-template-columns: 1fr !important; }
   .cta-band { flex-direction: column; gap: 20px; align-items: flex-start; margin: 0 24px 56px; }
   .page-hero { padding: 44px 24px 22px !important; }
@@ -491,7 +498,7 @@ html.js .reveal.in-view { opacity: 1; transform: none; }
   .nav-toggle { display: flex; }
 }
 @media (max-width: 600px) {
-  .services-grid, .service-grid, .gallery-grid, .news-grid, .news-full-grid, .equip-grid, .specialty-list {
+  .services-grid, .service-grid, .gallery-grid, .news-grid, .news-full-grid, .equip-grid, .specialty-list, .partners-grid {
     grid-template-columns: 1fr !important;
   }
   .site-footer .cols { grid-template-columns: 1fr; }
