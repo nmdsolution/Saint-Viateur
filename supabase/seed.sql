@@ -115,13 +115,13 @@ insert into public.insurances (name, sort_order) values
 -- -----------------------------------------------------------------------------
 -- partners (app/page.tsx, "Nos partenaires" section)
 -- -----------------------------------------------------------------------------
-insert into public.partners (icon_slug, name, description, sort_order) values
-  ('research-institute', 'Institut Pasteur de Côte d''Ivoire', 'Recherche, biologie médicale et référence en santé publique.', 1),
-  ('hospital', 'CHU de Cocody', 'Centre hospitalier universitaire pour les prises en charge spécialisées.', 2),
-  ('polyclinic', 'PISAM', 'Polyclinique Internationale Sainte Anne-Marie, partenaire pour les cas complexes.', 3),
-  ('red-cross', 'Croix-Rouge Côte d''Ivoire', 'Secours d''urgence, sensibilisation et dons de sang.', 4),
-  ('blood-bank', 'CNTS', 'Centre National de Transfusion Sanguine — approvisionnement en produits sanguins.', 5),
-  ('medical-board', 'Ordre National des Médecins de CI', 'Encadrement déontologique et garantie de la qualité des soins.', 6);
+insert into public.partners (icon_slug, name, description, photo_url, sort_order) values
+  ('research-institute', 'Institut Pasteur de Côte d''Ivoire', 'Recherche, biologie médicale et référence en santé publique.', '/partners/institut-pasteur.webp', 1),
+  ('hospital', 'CHU de Cocody', 'Centre hospitalier universitaire pour les prises en charge spécialisées.', '/partners/chu-cocody.jpg', 2),
+  ('polyclinic', 'PISAM', 'Polyclinique Internationale Sainte Anne-Marie, partenaire pour les cas complexes.', '/partners/pisam.jpg', 3),
+  ('red-cross', 'Croix-Rouge Côte d''Ivoire', 'Secours d''urgence, sensibilisation et dons de sang.', '/partners/croix-rouge.png', 4),
+  ('blood-bank', 'CNTS', 'Centre National de Transfusion Sanguine — approvisionnement en produits sanguins.', null, 5),
+  ('medical-board', 'Ordre National des Médecins de CI', 'Encadrement déontologique et garantie de la qualité des soins.', '/partners/ordre-medecins.jpg', 6);
 
 -- -----------------------------------------------------------------------------
 -- gallery_photos (app/gallery/page.tsx)

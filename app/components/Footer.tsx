@@ -1,19 +1,41 @@
 import Link from "next/link";
 import { pathFor } from "@/app/lib/nav";
+import { createClient } from "@/lib/supabase/server";
 
-export function Footer() {
+type SiteSettings = {
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  hours: string | null;
+  social_facebook: string | null;
+  social_linkedin: string | null;
+  social_instagram: string | null;
+  social_whatsapp: string | null;
+};
+
+export async function Footer() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("site_settings")
+    .select("address, phone, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp")
+    .eq("id", 1)
+    .maybeSingle();
+
+  const settings = data as SiteSettings | null;
+  const phoneHref = settings?.phone ? `tel:${settings.phone.replace(/\s+/g, "")}` : undefined;
+
   return (
     <footer className="site-footer">
       <div className="cols">
         <div className="col">
           <h4>Clinique Médicale Saint Viateur</h4>
-          <p>Riviera SIDECI, Abidjan, Côte d&apos;Ivoire</p>
+          <p>{settings?.address}</p>
           <p>Ouvert tous les jours — Urgences 24h/24</p>
           <div className="social-row">
-            <a href="#">f</a>
-            <a href="#">in</a>
-            <a href="#">ig</a>
-            <a href="#">wa</a>
+            {settings?.social_facebook && <a href={settings.social_facebook}>f</a>}
+            {settings?.social_linkedin && <a href={settings.social_linkedin}>in</a>}
+            {settings?.social_instagram && <a href={settings.social_instagram}>ig</a>}
+            {settings?.social_whatsapp && <a href={settings.social_whatsapp}>wa</a>}
           </div>
         </div>
         <div className="col">
@@ -35,8 +57,8 @@ export function Footer() {
         <div className="col">
           <h4>Contact</h4>
           <Link href={pathFor("contact")}>Formulaire de contact</Link>
-          <a href="tel:+225XXXXXXXXX">+225 XX XX XX XX XX</a>
-          <a href="#">contact@cliniquesaintviateur.ci</a>
+          {phoneHref && <a href={phoneHref}>{settings?.phone}</a>}
+          {settings?.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
         </div>
       </div>
       <div className="bottom">

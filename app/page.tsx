@@ -3,8 +3,66 @@ import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
 import { CountUp } from "@/app/components/CountUp";
+import { Icon } from "@/app/components/IconRegistry";
+import { createClient } from "@/lib/supabase/server";
 
-export default function HomePage() {
+type FeaturedSpecialty = {
+  id: string;
+  name: string;
+  icon_slug: string | null;
+  description: string | null;
+  sort_order: number;
+};
+
+type Partner = {
+  id: string;
+  icon_slug: string | null;
+  name: string;
+  description: string | null;
+  photo_url: string | null;
+  sort_order: number;
+};
+
+type NewsPreviewItem = {
+  id: string;
+  title: string;
+  published_date: string;
+  photo_url: string | null;
+};
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+
+function formatPublishedDate(isoDate: string): string {
+  return DATE_FORMATTER.format(new Date(`${isoDate}T00:00:00`));
+}
+
+export default async function HomePage() {
+  const supabase = await createClient();
+  const [{ data: featuredData }, { data: partnersData }, { data: newsData }] = await Promise.all([
+    supabase
+      .from("specialties")
+      .select("id, name, icon_slug, description, sort_order")
+      .eq("featured_on_homepage", true)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("partners")
+      .select("id, icon_slug, name, description, photo_url, sort_order")
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("news_items")
+      .select("id, title, published_date, photo_url")
+      .order("published_date", { ascending: false })
+      .limit(3),
+  ]);
+
+  const featuredSpecialties = (featuredData ?? []) as FeaturedSpecialty[];
+  const partners = (partnersData ?? []) as Partner[];
+  const newsPreview = (newsData ?? []) as NewsPreviewItem[];
+
   return (
     <>
       <Header active="" />
@@ -84,56 +142,17 @@ export default function HomePage() {
             </div>
           </Reveal>
           <div className="services-grid">
-            <Reveal index={1}>
-              <div className="card service-card">
-                <div className="icon-badge">
-                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6 3v5a4 4 0 0 0 8 0V3" />
-                    <path d="M10 12v3a5 5 0 0 0 5 5 4 4 0 0 0 4-4v-2" />
-                    <circle cx="19" cy="9" r="2" />
-                  </svg>
+            {featuredSpecialties.map((item, i) => (
+              <Reveal index={i + 1} key={item.id}>
+                <div className="card service-card">
+                  <div className="icon-badge">
+                    <Icon slug={item.icon_slug} className="ico" />
+                  </div>
+                  <strong>{item.name}</strong>
+                  {item.description && <p>{item.description}</p>}
                 </div>
-                <strong>Médecine Générale</strong>
-                <p>Consultations pour toute la famille, du dépistage au suivi.</p>
-              </div>
-            </Reveal>
-            <Reveal index={2}>
-              <div className="card service-card">
-                <div className="icon-badge">
-                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M6 21a6 6 0 0 1 12 0" />
-                    <path d="M10.5 8h.01M13.5 8h.01" />
-                  </svg>
-                </div>
-                <strong>Pédiatrie</strong>
-                <p>Suivi de la croissance et de la santé de l&apos;enfant.</p>
-              </div>
-            </Reveal>
-            <Reveal index={3}>
-              <div className="card service-card">
-                <div className="icon-badge">
-                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 20s-7-4.5-7-9.5A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.5c0 5-7 9.5-7 9.5z" />
-                  </svg>
-                </div>
-                <strong>Cardiologie</strong>
-                <p>Diagnostic et suivi des maladies cardiovasculaires.</p>
-              </div>
-            </Reveal>
-            <Reveal index={4}>
-              <div className="card service-card">
-                <div className="icon-badge">
-                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="11" cy="4.5" r="2" />
-                    <path d="M11 8c-2 0-3 2-3 4v8" />
-                    <path d="M11 9c3 0 5 2 5 5s-2 4-5 4" />
-                  </svg>
-                </div>
-                <strong>Gynécologie – Obstétrique</strong>
-                <p>Suivi de grossesse et santé de la femme.</p>
-              </div>
-            </Reveal>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -194,7 +213,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PROVISIONAL: placeholder partner list (real institutions, no confirmed partnership) — replace with clinic's actual partners per todo.txt "Liste des partenaires" before launch */}
       <section className="section section-soft">
         <div className="container">
           <Reveal index={0}>
@@ -209,78 +227,24 @@ export default function HomePage() {
             </div>
           </Reveal>
           <div className="partners-grid">
-            <Reveal index={1}>
-              <div className="card partner-card">
-                <div className="partner-logo">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/partners/institut-pasteur.webp"
-                    alt="Institut Pasteur de Côte d'Ivoire"
-                  />
+            {partners.map((partner, i) => (
+              <Reveal index={i + 1} key={partner.id}>
+                <div className="card partner-card">
+                  {partner.photo_url ? (
+                    <div className="partner-logo">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={partner.photo_url} alt={partner.name} />
+                    </div>
+                  ) : (
+                    <div className="icon-badge">
+                      <Icon slug={partner.icon_slug} className="ico" />
+                    </div>
+                  )}
+                  <strong>{partner.name}</strong>
+                  <p>{partner.description}</p>
                 </div>
-                <strong>Institut Pasteur de Côte d&apos;Ivoire</strong>
-                <p>Recherche, biologie médicale et référence en santé publique.</p>
-              </div>
-            </Reveal>
-            <Reveal index={2}>
-              <div className="card partner-card">
-                <div className="partner-logo">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/partners/chu-cocody.jpg" alt="CHU de Cocody" />
-                </div>
-                <strong>CHU de Cocody</strong>
-                <p>Centre hospitalier universitaire pour les prises en charge spécialisées.</p>
-              </div>
-            </Reveal>
-            <Reveal index={3}>
-              <div className="card partner-card">
-                <div className="partner-logo">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/partners/pisam.jpg" alt="PISAM" />
-                </div>
-                <strong>PISAM</strong>
-                <p>Polyclinique Internationale Sainte Anne-Marie, partenaire pour les cas complexes.</p>
-              </div>
-            </Reveal>
-            <Reveal index={4}>
-              <div className="card partner-card">
-                <div className="partner-logo">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/partners/croix-rouge.png"
-                    alt="Croix-Rouge Côte d'Ivoire"
-                  />
-                </div>
-                <strong>Croix-Rouge Côte d&apos;Ivoire</strong>
-                <p>Secours d&apos;urgence, sensibilisation et dons de sang.</p>
-              </div>
-            </Reveal>
-            <Reveal index={5}>
-              <div className="card partner-card">
-                <div className="icon-badge">
-                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M9 3h6l1 4H8z" />
-                    <path d="M8 7l-3 13h14L16 7" />
-                    <path d="M10 12h4" />
-                  </svg>
-                </div>
-                <strong>CNTS</strong>
-                <p>Centre National de Transfusion Sanguine — approvisionnement en produits sanguins.</p>
-              </div>
-            </Reveal>
-            <Reveal index={6}>
-              <div className="card partner-card">
-                <div className="partner-logo">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/partners/ordre-medecins.jpg"
-                    alt="Ordre National des Médecins de CI"
-                  />
-                </div>
-                <strong>Ordre National des Médecins de CI</strong>
-                <p>Encadrement déontologique et garantie de la qualité des soins.</p>
-              </div>
-            </Reveal>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -320,33 +284,17 @@ export default function HomePage() {
             </div>
           </Reveal>
           <div className="news-grid">
-            <Reveal index={1}>
-              <div className="card news-card">
-                <div className="photo-placeholder">Photo — campagne de santé</div>
-                <span className="date">12 juin 2026</span>
-                <strong style={{ display: "block", marginTop: 6 }}>
-                  Campagne de dépistage gratuit
-                </strong>
-              </div>
-            </Reveal>
-            <Reveal index={2}>
-              <div className="card news-card">
-                <div className="photo-placeholder">Photo — nouvel équipement</div>
-                <span className="date">28 mai 2026</span>
-                <strong style={{ display: "block", marginTop: 6 }}>
-                  Un nouvel appareil d&apos;imagerie médicale
-                </strong>
-              </div>
-            </Reveal>
-            <Reveal index={3}>
-              <div className="card news-card">
-                <div className="photo-placeholder">Photo — prévention</div>
-                <span className="date">03 mai 2026</span>
-                <strong style={{ display: "block", marginTop: 6 }}>
-                  5 gestes pour prévenir l&apos;hypertension
-                </strong>
-              </div>
-            </Reveal>
+            {newsPreview.map((item, i) => (
+              <Reveal index={i + 1} key={item.id}>
+                <div className="card news-card">
+                  <div className="photo-placeholder">
+                    {item.photo_url ?? `Photo — ${item.title}`}
+                  </div>
+                  <span className="date">{formatPublishedDate(item.published_date)}</span>
+                  <strong style={{ display: "block", marginTop: 6 }}>{item.title}</strong>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

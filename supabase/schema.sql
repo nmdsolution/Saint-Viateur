@@ -167,6 +167,7 @@ create table if not exists public.partners (
   icon_slug text,
   name text not null,
   description text,
+  photo_url text,
   sort_order int not null default 0
 );
 

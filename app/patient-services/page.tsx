@@ -1,125 +1,53 @@
-import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { Icon } from "@/app/components/IconRegistry";
+import { createClient } from "@/lib/supabase/server";
 
-function Ico({ children }: { children: ReactNode }) {
-  return (
-    <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-      {children}
-    </svg>
-  );
-}
+type ServiceTile = {
+  id: string;
+  icon_slug: string | null;
+  name: string;
+  description: string | null;
+  cta_label: string | null;
+  sort_order: number;
+};
 
-const SERVICE_TILES: { icon: ReactNode; name: string; description: string; withButton?: boolean }[] = [
-  {
-    name: "Prise de rendez-vous",
-    description: "En ligne, par téléphone ou WhatsApp.",
-    withButton: true,
-    icon: (
-      <Ico>
-        <rect x="3" y="5" width="18" height="16" rx="2" />
-        <path d="M3 10h18M8 3v4M16 3v4" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Hospitalisation",
-    description: "Chambres individuelles et collectives, documents à fournir à l'admission.",
-    icon: (
-      <Ico>
-        <path d="M3 19v-9M3 14h18v5" />
-        <path d="M21 19v-5a3 3 0 0 0-3-3h-7v3" />
-        <circle cx="7" cy="11" r="2" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Urgences",
-    description: "Accueil des urgences 24h/24, 7j/7.",
-    icon: (
-      <Ico>
-        <path d="M3 16.5V8h11v8.5" />
-        <path d="M14 11h3l3 3v2.5h-6" />
-        <circle cx="7" cy="17.5" r="1.8" />
-        <circle cx="17" cy="17.5" r="1.8" />
-        <path d="M8 10v3M6.5 11.5h3" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Pharmacie",
-    description: "Pharmacie sur site pour vos traitements.",
-    icon: (
-      <Ico>
-        <rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-35 12 12)" />
-        <path d="M9.5 14.5l5-5" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Laboratoire",
-    description: "Analyses biologiques, retrait des résultats en ligne.",
-    icon: (
-      <Ico>
-        <path d="M9 3h6" />
-        <path d="M10 3v14a2 2 0 0 0 4 0V3" />
-        <path d="M10 12h4" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Imagerie médicale",
-    description: "Scanner, échographie, radiologie numérique.",
-    icon: (
-      <Ico>
-        <path d="M4 8V6a2 2 0 0 1 2-2h2M20 8V6a2 2 0 0 0-2-2h-2M4 16v2a2 2 0 0 0 2 2h2M20 16v2a2 2 0 0 1-2 2h-2" />
-        <path d="M3 12h18" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Assurances acceptées",
-    description: "Liste des assurances et partenaires conventionnés.",
-    icon: (
-      <Ico>
-        <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
-      </Ico>
-    ),
-  },
-  {
-    name: "Chat WhatsApp",
-    description: "Une question ? Écrivez-nous directement.",
-    icon: (
-      <Ico>
-        <path d="M20 15a3 3 0 0 1-3 3H9l-5 3V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3z" />
-      </Ico>
-    ),
-  },
-];
+type FaqItem = {
+  id: string;
+  question: string;
+  answer: string;
+  sort_order: number;
+};
 
-const FAQ_ITEMS = [
-  {
-    question: "Comment prendre rendez-vous en ligne ?",
-    answer:
-      "Utilisez le bouton \"Prendre rendez-vous\" en haut de page, ou contactez-nous par WhatsApp / téléphone.",
-    open: true,
-  },
-  {
-    question: "Comment récupérer mes résultats d'analyses ?",
-    answer: "Les résultats sont disponibles au laboratoire ou via votre espace patient en ligne.",
-  },
-  {
-    question: "Quels documents apporter pour une hospitalisation ?",
-    answer: "Pièce d'identité, carte d'assurance et lettre d'admission du médecin.",
-  },
-  {
-    question: "La clinique recrute-t-elle ?",
-    answer: "Consultez notre espace recrutement pour les offres en cours.",
-  },
-];
+type Insurance = {
+  id: string;
+  name: string;
+  sort_order: number;
+};
 
-export default function PatientServicesPage() {
+export default async function PatientServicesPage() {
+  const supabase = await createClient();
+  const [{ data: tilesData }, { data: faqData }, { data: insuranceData }] = await Promise.all([
+    supabase
+      .from("patient_service_tiles")
+      .select("id, icon_slug, name, description, cta_label, sort_order")
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("faq_items")
+      .select("id, question, answer, sort_order")
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("insurances")
+      .select("id, name, sort_order")
+      .order("sort_order", { ascending: true }),
+  ]);
+
+  const serviceTiles = (tilesData ?? []) as ServiceTile[];
+  const faqItems = (faqData ?? []) as FaqItem[];
+  const insurances = (insuranceData ?? []) as Insurance[];
+  const firstFaqId = faqItems[0]?.id;
+
   return (
     <>
       <Header active="patient-services" />
@@ -139,24 +67,15 @@ export default function PatientServicesPage() {
             </p>
             <div className="hero-pills">
               <span className="hero-pill">
-                <Ico>
-                  <rect x="3" y="5" width="18" height="16" rx="2" />
-                  <path d="M3 10h18M8 3v4M16 3v4" />
-                </Ico>
+                <Icon slug="calendar" className="ico" />
                 RDV en ligne
               </span>
               <span className="hero-pill">
-                <Ico>
-                  <path d="M3 19v-9M3 14h18v5" />
-                  <path d="M21 19v-5a3 3 0 0 0-3-3h-7v3" />
-                  <circle cx="7" cy="11" r="2" />
-                </Ico>
+                <Icon slug="hospital-bed" className="ico" />
                 Chambres individuelles
               </span>
               <span className="hero-pill">
-                <Ico>
-                  <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
-                </Ico>
+                <Icon slug="insurance" className="ico" />
                 Assurances conventionnées
               </span>
             </div>
@@ -167,15 +86,17 @@ export default function PatientServicesPage() {
       <section className="section">
         <div className="container">
           <div className="service-grid">
-            {SERVICE_TILES.map((tile, i) => (
-              <Reveal index={i + 1} key={tile.name}>
+            {serviceTiles.map((tile, i) => (
+              <Reveal index={i + 1} key={tile.id}>
                 <div className="card service-tile">
-                  <div className="icon-badge">{tile.icon}</div>
+                  <div className="icon-badge">
+                    <Icon slug={tile.icon_slug} className="ico" />
+                  </div>
                   <strong>{tile.name}</strong>
                   <p>{tile.description}</p>
-                  {tile.withButton && (
+                  {tile.cta_label && (
                     <button className="btn btn-outline btn-sm" style={{ marginTop: 10 }}>
-                      Réserver
+                      {tile.cta_label}
                     </button>
                   )}
                 </div>
@@ -192,11 +113,11 @@ export default function PatientServicesPage() {
           <Reveal index={0}>
             <div className="card" style={{ marginBottom: 52 }}>
               <div className="insurance-row">
-                <span className="chip chip-neutral">NSIA Assurances</span>
-                <span className="chip chip-neutral">Saham Assurance</span>
-                <span className="chip chip-neutral">Allianz CI</span>
-                <span className="chip chip-neutral">CNAM</span>
-                <span className="chip chip-neutral">+ Liste complète des partenaires</span>
+                {insurances.map((insurance) => (
+                  <span className="chip chip-neutral" key={insurance.id}>
+                    {insurance.name}
+                  </span>
+                ))}
               </div>
             </div>
           </Reveal>
@@ -208,8 +129,8 @@ export default function PatientServicesPage() {
             </div>
           </Reveal>
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
-            {FAQ_ITEMS.map((item) => (
-              <details className="faq-item" open={item.open} key={item.question}>
+            {faqItems.map((item) => (
+              <details className="faq-item" open={item.id === firstFaqId} key={item.id}>
                 <summary>
                   {item.question} <span>＋</span>
                 </summary>

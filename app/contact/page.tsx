@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { createClient } from "@/lib/supabase/server";
 
 function Ico({ children }: { children: ReactNode }) {
   return (
@@ -11,7 +12,27 @@ function Ico({ children }: { children: ReactNode }) {
   );
 }
 
-export default function ContactPage() {
+type SiteSettings = {
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  hours: string | null;
+  social_facebook: string | null;
+  social_linkedin: string | null;
+  social_instagram: string | null;
+  social_whatsapp: string | null;
+};
+
+export default async function ContactPage() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("site_settings")
+    .select("address, phone, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp")
+    .eq("id", 1)
+    .maybeSingle();
+
+  const settings = data as SiteSettings | null;
+
   return (
     <>
       <Header active="contact" />
@@ -34,7 +55,7 @@ export default function ContactPage() {
                 <Ico>
                   <path d="M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z" />
                 </Ico>
-                +225 XX XX XX XX XX
+                {settings?.phone}
               </span>
               <span className="hero-pill">
                 <Ico>
@@ -94,7 +115,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong>Adresse</strong>
-                    <span>Riviera SIDECI, Abidjan, Côte d&apos;Ivoire</span>
+                    <span>{settings?.address}</span>
                   </div>
                 </div>
                 <div className="info-row">
@@ -105,7 +126,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong>Téléphone</strong>
-                    <span>+225 XX XX XX XX XX</span>
+                    <span>{settings?.phone}</span>
                   </div>
                 </div>
                 <div className="info-row">
@@ -117,7 +138,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong>E-mail</strong>
-                    <span>contact@cliniquesaintviateur.ci</span>
+                    <span>{settings?.email}</span>
                   </div>
                 </div>
                 <div className="info-row">
@@ -129,7 +150,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <strong>Horaires</strong>
-                    <span>Lun–Dim, urgences 24h/24</span>
+                    <span>{settings?.hours}</span>
                   </div>
                 </div>
                 <div className="photo-placeholder map-placeholder">Carte Google Maps</div>
@@ -157,24 +178,30 @@ export default function ContactPage() {
                   Réseaux sociaux
                 </strong>
                 <div className="social-row" style={{ justifyContent: "flex-start" }}>
-                  <a
-                    href="#"
-                    style={{ background: "var(--color-primary-light)", color: "var(--color-primary-darker)" }}
-                  >
-                    f
-                  </a>
-                  <a
-                    href="#"
-                    style={{ background: "var(--color-primary-light)", color: "var(--color-primary-darker)" }}
-                  >
-                    in
-                  </a>
-                  <a
-                    href="#"
-                    style={{ background: "var(--color-primary-light)", color: "var(--color-primary-darker)" }}
-                  >
-                    ig
-                  </a>
+                  {settings?.social_facebook && (
+                    <a
+                      href={settings.social_facebook}
+                      style={{ background: "var(--color-primary-light)", color: "var(--color-primary-darker)" }}
+                    >
+                      f
+                    </a>
+                  )}
+                  {settings?.social_linkedin && (
+                    <a
+                      href={settings.social_linkedin}
+                      style={{ background: "var(--color-primary-light)", color: "var(--color-primary-darker)" }}
+                    >
+                      in
+                    </a>
+                  )}
+                  {settings?.social_instagram && (
+                    <a
+                      href={settings.social_instagram}
+                      style={{ background: "var(--color-primary-light)", color: "var(--color-primary-darker)" }}
+                    >
+                      ig
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
