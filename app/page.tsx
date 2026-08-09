@@ -200,7 +200,7 @@ export default function HomePage() {
             <h3>Besoin d&apos;un rendez-vous rapidement ?</h3>
             <p>Réservez en ligne ou contactez-nous directement sur WhatsApp.</p>
           </div>
-          <div style={{ display: "flex", gap: 12 }}>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <button
               className="btn"
               style={{ background: "#fff", color: "var(--color-primary-darker)", animation: "none" }}

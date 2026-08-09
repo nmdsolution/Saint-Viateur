@@ -64,6 +64,51 @@ export function Header({ active }: { active: Slug }) {
           <span className="dot" /> Urgences 24h/24
         </span>
         <button className="btn btn-primary btn-sm">Prendre RDV</button>
+        <button
+          type="button"
+          className="nav-toggle"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+      <div className="mobile-nav-panel">
+        {NAV_GROUPS.map((group) => {
+          if (group.type === "link") {
+            return (
+              <Link
+                key={group.slug || "home"}
+                href={pathFor(group.slug)}
+                className={group.slug === active ? "active" : undefined}
+              >
+                {group.label}
+              </Link>
+            );
+          }
+
+          return (
+            <div key={group.label}>
+              <span className="group-label">{group.label}</span>
+              {group.items.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={pathFor(item.slug)}
+                  className={
+                    item.slug === active ? "sub-link active" : "sub-link"
+                  }
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          );
+        })}
+        <span className="emergency-strip">
+          <span className="dot" /> Urgences 24h/24
+        </span>
       </div>
     </header>
   );
