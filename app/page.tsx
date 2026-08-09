@@ -194,6 +194,97 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* PROVISIONAL: placeholder partner list (real institutions, no confirmed partnership) — replace with clinic's actual partners per todo.txt "Liste des partenaires" before launch */}
+      <section className="section section-soft">
+        <div className="container">
+          <Reveal index={0}>
+            <div className="section-header">
+              <span className="eyebrow">Nos partenaires</span>
+              <h2>Ils nous accompagnent au quotidien</h2>
+              <p>
+                Un réseau d&apos;institutions médicales et sanitaires en Côte
+                d&apos;Ivoire pour garantir à nos patients une prise en charge
+                complète et coordonnée.
+              </p>
+            </div>
+          </Reveal>
+          <div className="partners-grid">
+            <Reveal index={1}>
+              <div className="card partner-card">
+                <div className="partner-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/partners/institut-pasteur.webp"
+                    alt="Institut Pasteur de Côte d'Ivoire"
+                  />
+                </div>
+                <strong>Institut Pasteur de Côte d&apos;Ivoire</strong>
+                <p>Recherche, biologie médicale et référence en santé publique.</p>
+              </div>
+            </Reveal>
+            <Reveal index={2}>
+              <div className="card partner-card">
+                <div className="partner-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/partners/chu-cocody.jpg" alt="CHU de Cocody" />
+                </div>
+                <strong>CHU de Cocody</strong>
+                <p>Centre hospitalier universitaire pour les prises en charge spécialisées.</p>
+              </div>
+            </Reveal>
+            <Reveal index={3}>
+              <div className="card partner-card">
+                <div className="partner-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/partners/pisam.jpg" alt="PISAM" />
+                </div>
+                <strong>PISAM</strong>
+                <p>Polyclinique Internationale Sainte Anne-Marie, partenaire pour les cas complexes.</p>
+              </div>
+            </Reveal>
+            <Reveal index={4}>
+              <div className="card partner-card">
+                <div className="partner-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/partners/croix-rouge.png"
+                    alt="Croix-Rouge Côte d'Ivoire"
+                  />
+                </div>
+                <strong>Croix-Rouge Côte d&apos;Ivoire</strong>
+                <p>Secours d&apos;urgence, sensibilisation et dons de sang.</p>
+              </div>
+            </Reveal>
+            <Reveal index={5}>
+              <div className="card partner-card">
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 3h6l1 4H8z" />
+                    <path d="M8 7l-3 13h14L16 7" />
+                    <path d="M10 12h4" />
+                  </svg>
+                </div>
+                <strong>CNTS</strong>
+                <p>Centre National de Transfusion Sanguine — approvisionnement en produits sanguins.</p>
+              </div>
+            </Reveal>
+            <Reveal index={6}>
+              <div className="card partner-card">
+                <div className="partner-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/partners/ordre-medecins.jpg"
+                    alt="Ordre National des Médecins de CI"
+                  />
+                </div>
+                <strong>Ordre National des Médecins de CI</strong>
+                <p>Encadrement déontologique et garantie de la qualité des soins.</p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       <Reveal index={0}>
         <div className="cta-band">
           <div>
