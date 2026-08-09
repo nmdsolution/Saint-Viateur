@@ -1,0 +1,834 @@
+/* =============================================================================
+   Backoffice admin surface — visually distinct from the public site.
+   Reuses design tokens defined in `app/site.css` (`:root`), but every
+   component class here is prefixed `.adm-` and lives only in this file so
+   the public site's `site.css` stays untouched.
+   ============================================================================= */
+
+/* ---------- Login / unauthorized (no sidebar chrome) ---------- */
+.adm-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(
+    160deg,
+    var(--color-primary-lighter),
+    var(--color-bg-soft)
+  );
+  font-family: var(--font-sans);
+}
+
+.adm-login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 40px 36px;
+  text-align: center;
+}
+
+.adm-login-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.adm-login-brand h1 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--color-ink);
+}
+
+.adm-login-brand p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--color-ink-soft);
+}
+
+.adm-login-error {
+  background: var(--color-urgent-bg);
+  border: 1px solid var(--color-urgent);
+  color: var(--color-urgent);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.adm-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.adm-login-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  margin-top: 10px;
+}
+
+.adm-login-form input {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+}
+
+.adm-login-form input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-bg);
+}
+
+.adm-login-submit {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adm-login-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.adm-unauthorized-card {
+  text-align: center;
+}
+
+.adm-unauthorized-card h1 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: var(--color-ink);
+}
+
+.adm-unauthorized-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-ink-soft);
+}
+
+.adm-unauthorized-link {
+  text-decoration: none;
+  margin-top: 24px;
+}
+
+/* ---------- Shell (sidebar + topbar) ---------- */
+.adm-shell {
+  display: flex;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background: var(--color-bg-soft);
+}
+
+.adm-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--color-primary-darker);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+}
+
+.adm-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 24px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.adm-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.adm-brand-text strong {
+  font-size: 15px;
+}
+
+.adm-brand-text span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.adm-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 12px;
+  overflow-y: auto;
+}
+
+.adm-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.adm-nav-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0 12px 8px;
+}
+
+.adm-nav-link {
+  display: block;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.adm-nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.adm-nav-link.active {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.adm-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.adm-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 32px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.adm-topbar-spacer {
+  flex: 1;
+}
+
+.adm-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adm-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--color-primary-light);
+  color: var(--color-primary-darker);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.adm-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.adm-user-info strong {
+  font-size: 13px;
+  color: var(--color-ink);
+}
+
+.adm-role-pill {
+  display: inline-block;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 999px;
+  margin-top: 2px;
+}
+
+.adm-role-pill-admin {
+  background: var(--color-primary-light);
+  color: var(--color-primary-darker);
+}
+
+.adm-role-pill-editor {
+  background: var(--color-bg-soft);
+  color: var(--color-ink-soft);
+  border: 1px solid var(--color-border);
+}
+
+.adm-logout-btn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.adm-logout-btn:hover {
+  background: var(--color-bg-soft);
+}
+
+.adm-content {
+  flex: 1;
+  padding: 32px;
+}
+
+.adm-page-title {
+  margin: 0 0 24px;
+  font-size: 22px;
+  color: var(--color-ink);
+}
+
+/* ---------- Dashboard ---------- */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.adm-stat-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.adm-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-primary-darker);
+}
+
+.adm-stat-label {
+  font-size: 13px;
+  color: var(--color-ink-soft);
+}
+
+.adm-panel {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+
+.adm-panel h2 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  color: var(--color-ink);
+}
+
+.adm-conversation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-conversation-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+}
+
+.adm-conversation-item:last-child {
+  border-bottom: none;
+}
+
+.adm-conversation-session {
+  flex: 1;
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.adm-conversation-meta {
+  color: var(--color-ink-soft);
+}
+
+.adm-empty-state {
+  color: var(--color-ink-soft);
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .adm-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .adm-sidebar {
+    display: none;
+  }
+
+  .adm-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .adm-content {
+    padding: 20px;
+  }
+}
+
+/* =============================================================================
+   AdminEntityManager (Phase 3b) — generic table + edit-drawer pattern used
+   by every content-entity admin page (specialties, equipment, gallery, ...).
+   ============================================================================= */
+.aem-section {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.aem-section-title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  color: var(--color-ink);
+}
+
+.aem-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aem-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.aem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.aem-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.aem-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink);
+  vertical-align: middle;
+}
+
+.aem-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.aem-row {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.aem-row:hover {
+  background: var(--color-bg-soft);
+}
+
+.aem-row-link {
+  color: var(--color-primary-darker);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.aem-row-link:hover {
+  text-decoration: underline;
+}
+
+.aem-col-order {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.aem-col-actions {
+  white-space: nowrap;
+  width: 1%;
+  text-align: right;
+}
+
+.aem-order-btn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+
+.aem-order-btn:hover:not(:disabled) {
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+}
+
+.aem-order-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.aem-order-btn + .aem-order-btn {
+  margin-left: 4px;
+}
+
+.aem-btn-primary,
+.aem-btn-secondary,
+.aem-btn-danger {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.aem-btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.aem-btn-primary:hover:not(:disabled) {
+  box-shadow: var(--shadow-md);
+}
+
+.aem-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.aem-btn-secondary {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-ink-soft);
+}
+
+.aem-btn-secondary:hover {
+  background: var(--color-bg-soft);
+}
+
+.aem-btn-danger {
+  background: var(--color-urgent-bg);
+  color: var(--color-urgent);
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.aem-btn-danger:hover:not(:disabled) {
+  background: var(--color-urgent);
+  color: #fff;
+}
+
+.aem-btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aem-back-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+}
+
+.aem-back-link:hover {
+  color: var(--color-primary-darker);
+}
+
+/* ---------- Drawer ---------- */
+.aem-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 40;
+}
+
+.aem-drawer {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-lg);
+  padding: 28px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aem-drawer h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--color-ink);
+}
+
+.aem-form,
+.aem-form-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aem-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aem-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.aem-field input[type="text"],
+.aem-field input[type="email"],
+.aem-field input[type="number"],
+.aem-field input[type="date"],
+.aem-field select,
+.aem-field textarea,
+.aem-form input[type="text"],
+.aem-form input[type="email"],
+.aem-form input[type="number"],
+.aem-form input[type="date"],
+.aem-form select,
+.aem-form textarea {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+}
+
+.aem-field input:focus,
+.aem-field select:focus,
+.aem-field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-bg);
+}
+
+.aem-field textarea {
+  resize: vertical;
+}
+
+.aem-drawer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.aem-drawer-actions-page {
+  margin-top: 0;
+  justify-content: flex-start;
+}
+
+.aem-form-error {
+  background: var(--color-urgent-bg);
+  border: 1px solid var(--color-urgent);
+  color: var(--color-urgent);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.aem-form-success {
+  background: var(--color-primary-lighter);
+  border: 1px solid var(--color-primary-light);
+  color: var(--color-primary-darker);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ---------- Toggle switch (boolean fields) ---------- */
+.aem-switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+}
+
+.aem-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.aem-switch-track {
+  position: absolute;
+  inset: 0;
+  background: var(--color-border);
+  border-radius: 999px;
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.aem-switch-track::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 999px;
+  transition: transform 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.aem-switch input:checked + .aem-switch-track {
+  background: var(--color-primary);
+}
+
+.aem-switch input:checked + .aem-switch-track::before {
+  transform: translateX(18px);
+}
+
+/* ---------- Inline forms (staff role select, etc.) ---------- */
+.aem-inline-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aem-inline-form select {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 7px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+}
+
+/* =============================================================================
+   Chatbot conversation viewer (Phase 3b)
+   ============================================================================= */
+.ach-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ach-msg {
+  max-width: 70%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ach-msg-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.ach-msg-time {
+  font-size: 11px;
+  color: var(--color-ink-soft);
+}
+
+.ach-msg.bot {
+  align-self: flex-start;
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: 4px;
+}
+
+.ach-msg.me {
+  align-self: flex-end;
+  background: var(--color-primary);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.ach-msg.me .ach-msg-time {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 640px) {
+  .aem-drawer {
+    max-width: 100%;
+  }
+
+  .ach-msg {
+    max-width: 90%;
+  }
+}

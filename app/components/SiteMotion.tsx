@@ -4,15 +4,15 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 /**
- * Ports the V2 mockup's shared vanilla-JS motion layer (design/v2_sync's
- * assets/site.js) as a single client component mounted once in the v2
+ * Ports the site's shared vanilla-JS motion layer (design/v2_sync's
+ * assets/site.js) as a single client component mounted once in the root
  * layout. It operates directly on the DOM — same spirit as the original
  * script — rather than as idiomatic per-element React state, since the
  * design's behavior (rect-based reveal/count triggers, pointer tilt,
  * parallax, real click-to-filter, lightbox) is inherently imperative.
  *
  * Because Next's App Router keeps this component mounted across
- * client-side navigations between /v2/* pages, page-scoped bindings
+ * client-side navigations between pages, page-scoped bindings
  * (reveal targets, counters, card tilt, filters, contact form, lightbox
  * zoomables) are re-queried and rebound whenever the pathname changes,
  * while the scroll-progress bar and the lightbox overlay singleton are
@@ -208,6 +208,33 @@ export function SiteMotion() {
       formHandlers.push({ btn, handler });
     });
 
+    /* mobile nav toggle (hamburger <-> mobile-nav-panel) */
+    const navToggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+    const navPanel = document.querySelector<HTMLElement>(".mobile-nav-panel");
+    function closeMobileNav() {
+      if (!navToggle || !navPanel) return;
+      navToggle.classList.remove("is-open");
+      navPanel.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Ouvrir le menu");
+    }
+    function onNavToggleClick() {
+      if (!navToggle || !navPanel) return;
+      const isOpen = navToggle.classList.toggle("is-open");
+      navPanel.classList.toggle("is-open", isOpen);
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+    }
+    function onNavResize() {
+      if (innerWidth > 860) closeMobileNav();
+    }
+    const navPanelLinks = navPanel
+      ? Array.from(navPanel.querySelectorAll<HTMLElement>("a"))
+      : [];
+    navToggle?.addEventListener("click", onNavToggleClick);
+    navPanelLinks.forEach((link) => link.addEventListener("click", closeMobileNav));
+    addEventListener("resize", onNavResize);
+
     /* lightbox for placeholders marked data-zoom */
     const lightbox = document.querySelector<HTMLElement>(".lightbox");
     const frame = lightbox?.querySelector<HTMLElement>(".frame");
@@ -239,6 +266,9 @@ export function SiteMotion() {
       filterChips.forEach((chip) => chip.removeEventListener("click", onFilterClick));
       formHandlers.forEach(({ btn, handler }) => btn.removeEventListener("click", handler));
       zoomables.forEach((z) => z.removeEventListener("click", onZoomClick));
+      navToggle?.removeEventListener("click", onNavToggleClick);
+      navPanelLinks.forEach((link) => link.removeEventListener("click", closeMobileNav));
+      removeEventListener("resize", onNavResize);
     });
 
     return () => cleanups.forEach((fn) => fn());

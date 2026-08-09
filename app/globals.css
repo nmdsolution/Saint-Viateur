@@ -1,5 +1,5 @@
-/* Minimal global reset. Each design version (v1/v2) brings its own tokens
-   and component styles from app/v1/v1.css and app/v2/v2.css. */
+/* Minimal global reset. Design tokens and component styles live in
+   app/site.css, imported once from the root layout. */
 * {
   box-sizing: border-box;
 }

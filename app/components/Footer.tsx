@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { pathFor, type Version } from "@/app/lib/nav";
+import { pathFor } from "@/app/lib/nav";
 
-export function Footer({ version }: { version: Version }) {
+export function Footer() {
   return (
     <footer className="site-footer">
       <div className="cols">
@@ -18,23 +18,23 @@ export function Footer({ version }: { version: Version }) {
         </div>
         <div className="col">
           <h4>Navigation</h4>
-          <Link href={pathFor(version, "services")}>Spécialités</Link>
-          <Link href={pathFor(version, "equipment")}>Équipements</Link>
-          <Link href={pathFor(version, "gallery")}>Galerie</Link>
-          <Link href={pathFor(version, "news")}>Actualités</Link>
+          <Link href={pathFor("services")}>Spécialités</Link>
+          <Link href={pathFor("equipment")}>Équipements</Link>
+          <Link href={pathFor("gallery")}>Galerie</Link>
+          <Link href={pathFor("news")}>Actualités</Link>
         </div>
         <div className="col">
           <h4>Patients</h4>
-          <Link href={pathFor(version, "patient-services")}>Prendre RDV</Link>
-          <Link href={pathFor(version, "patient-services")}>
+          <Link href={pathFor("patient-services")}>Prendre RDV</Link>
+          <Link href={pathFor("patient-services")}>
             Résultats d&apos;analyses
           </Link>
-          <Link href={pathFor(version, "patient-services")}>Assurances</Link>
-          <Link href={pathFor(version, "patient-services")}>FAQ</Link>
+          <Link href={pathFor("patient-services")}>Assurances</Link>
+          <Link href={pathFor("patient-services")}>FAQ</Link>
         </div>
         <div className="col">
           <h4>Contact</h4>
-          <Link href={pathFor(version, "contact")}>Formulaire de contact</Link>
+          <Link href={pathFor("contact")}>Formulaire de contact</Link>
           <a href="tel:+225XXXXXXXXX">+225 XX XX XX XX XX</a>
           <a href="#">contact@cliniquesaintviateur.ci</a>
         </div>
