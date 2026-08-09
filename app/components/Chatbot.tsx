@@ -64,6 +64,35 @@ type Message = { id: number; role: "bot" | "me"; text: string };
 
 let messageId = 0;
 
+const SESSION_STORAGE_KEY = "svc-chat-session";
+
+/**
+ * Returns the visitor's persistent chat session id, reading it from
+ * localStorage first and only generating+storing a new one if absent, so
+ * multiple messages across a visit group into one `chatbot_conversations`
+ * row (see supabase/schema.sql).
+ */
+function getOrCreateSessionId(): string {
+  const existing = window.localStorage.getItem(SESSION_STORAGE_KEY);
+  if (existing) return existing;
+  const created = crypto.randomUUID();
+  window.localStorage.setItem(SESSION_STORAGE_KEY, created);
+  return created;
+}
+
+/**
+ * Best-effort, fire-and-forget persistence of a chat message. Never awaited
+ * by callers and never surfaces an error to the user — the widget must
+ * work identically whether or not a Supabase project is actually reachable.
+ */
+function logMessage(sessionId: string, role: "me" | "bot", text: string) {
+  fetch("/api/chatbot/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sessionId, role, text }),
+  }).catch(() => {});
+}
+
 export function Chatbot() {
   const [open, setOpen] = useState(false);
   const [greeted, setGreeted] = useState(false);
@@ -75,6 +104,12 @@ export function Chatbot() {
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sessionIdRef = useRef<string | null>(null);
+
+  function sessionId(): string {
+    if (!sessionIdRef.current) sessionIdRef.current = getOrCreateSessionId();
+    return sessionIdRef.current;
+  }
 
   useEffect(() => {
     return () => {
@@ -94,11 +129,13 @@ export function Chatbot() {
       setTyping(false);
       setMessages((prev) => [...prev, { id: messageId++, role: "bot", text }]);
       setQuick(q);
+      logMessage(sessionId(), "bot", text);
     }, delay);
   }
 
   function send(text: string) {
     setMessages((prev) => [...prev, { id: messageId++, role: "me", text }]);
+    logMessage(sessionId(), "me", text);
     const result = answer(text);
     bot(result.a, result.q);
   }
@@ -202,6 +239,9 @@ export function Chatbot() {
         <div className="cb-note">
           Assistant de démonstration — les informations médicales doivent être
           confirmées par la clinique.
+        </div>
+        <div className="cb-note">
+          Vos échanges peuvent être conservés pour améliorer nos services.
         </div>
       </div>
     </>
