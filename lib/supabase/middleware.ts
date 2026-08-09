@@ -37,7 +37,13 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: avoid writing any logic between `createServerClient` and
   // `supabase.auth.getUser()`. A simple mistake could make it very hard to
   // debug issues with users being randomly logged out.
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return supabaseResponse;
+  // Return the already-authenticated `supabase` client and `user` alongside
+  // the response so callers (e.g. root `middleware.ts`) can run further
+  // checks (like a `profiles` lookup) without creating a second client and
+  // paying for another `getUser()` round-trip.
+  return { supabase, supabaseResponse, user };
 }
