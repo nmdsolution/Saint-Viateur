@@ -1,29 +1,26 @@
-import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { createClient } from "@/lib/supabase/server";
 
-function Ico({ children }: { children: ReactNode }) {
-  return (
-    <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-      {children}
-    </svg>
-  );
-}
+type GalleryPhoto = {
+  id: string;
+  label: string;
+  category: string;
+  photo_url: string | null;
+  tall: boolean;
+  sort_order: number;
+};
 
-const PHOTOS: { label: string; cat: string; zoom: string; tall?: boolean }[] = [
-  { label: "Accueil", cat: "accueil", zoom: "Photo — Accueil", tall: true },
-  { label: "Salle d'attente", cat: "attente", zoom: "Photo — Salle d'attente" },
-  { label: "Chambre", cat: "chambre", zoom: "Photo — Chambre" },
-  { label: "Bloc opératoire", cat: "bloc", zoom: "Photo — Bloc opératoire" },
-  { label: "Équipement", cat: "equip", zoom: "Photo — Équipement" },
-  { label: "Salle d'attente", cat: "attente", zoom: "Photo — Salle d'attente" },
-  { label: "Chambre", cat: "chambre", zoom: "Photo — Chambre" },
-  { label: "Couloir", cat: "accueil", zoom: "Photo — Couloir" },
-  { label: "Équipement", cat: "equip", zoom: "Photo — Équipement" },
-];
+export default async function GalleryPage() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("gallery_photos")
+    .select("id, label, category, photo_url, tall, sort_order")
+    .order("sort_order", { ascending: true });
 
-export default function GalleryPage() {
+  const photos = (data ?? []) as GalleryPhoto[];
+
   return (
     <>
       <Header active="gallery" />
@@ -51,18 +48,18 @@ export default function GalleryPage() {
             </div>
             <div className="hero-pills">
               <span className="hero-pill">
-                <Ico>
+                <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="3" y="7" width="18" height="13" rx="3" />
                   <circle cx="12" cy="13.5" r="3.2" />
                   <path d="M9 7l1.5-3h3L15 7" />
-                </Ico>
+                </svg>
                 Visite photo
               </span>
               <span className="hero-pill">
-                <Ico>
+                <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11z" />
                   <circle cx="12" cy="10" r="2.5" />
-                </Ico>
+                </svg>
                 Riviera SIDECI, Abidjan
               </span>
             </div>
@@ -73,12 +70,12 @@ export default function GalleryPage() {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="gallery-grid">
-            {PHOTOS.map((photo, index) => (
-              <Reveal index={index + 1} key={`${photo.label}-${index}`}>
+            {photos.map((photo, index) => (
+              <Reveal index={index + 1} key={photo.id}>
                 <div
                   className={`photo-placeholder${photo.tall ? " tall" : ""}`}
-                  data-cat={photo.cat}
-                  data-zoom={photo.zoom}
+                  data-cat={photo.category}
+                  data-zoom={photo.photo_url ?? `Photo — ${photo.label}`}
                 >
                   {photo.label}
                 </div>

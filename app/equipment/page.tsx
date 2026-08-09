@@ -1,109 +1,41 @@
-import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { Icon } from "@/app/components/IconRegistry";
+import { createClient } from "@/lib/supabase/server";
 
-function Ico({ children }: { children: ReactNode }) {
-  return (
-    <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-      {children}
-    </svg>
-  );
-}
+type Equipment = {
+  id: string;
+  name: string;
+  description: string | null;
+  photo_url: string | null;
+  sort_order: number;
+};
 
-const EQUIPMENT = [
-  {
-    photo: "Photo — Scanner / Imagerie",
-    name: "Scanner (Imagerie médicale)",
-    description: "Examens d'imagerie haute résolution pour un diagnostic précis.",
-  },
-  {
-    photo: "Photo — Échographe",
-    name: "Échographe",
-    description: "Suivi de grossesse et explorations abdominales / cardiaques.",
-  },
-  {
-    photo: "Photo — Radiologie numérique",
-    name: "Radiologie numérique",
-    description: "Radiographies numériques à faible dose, résultats rapides.",
-  },
-  {
-    photo: "Photo — Laboratoire",
-    name: "Laboratoire d'analyses",
-    description: "Analyses biologiques sur place avec rendu rapide des résultats.",
-  },
-  {
-    photo: "Photo — Bloc opératoire",
-    name: "Bloc opératoire équipé",
-    description: "Salles d'opération aux normes pour la chirurgie générale et spécialisée.",
-  },
-  {
-    photo: "Photo — Monitoring",
-    name: "Monitoring & réanimation",
-    description: "Surveillance continue des patients en soins intensifs.",
-  },
-];
+type EquipmentHighlight = {
+  id: string;
+  icon_slug: string | null;
+  label: string;
+  sort_order: number;
+};
 
-const MARQUEE_ITEMS: { icon: ReactNode; label: string }[] = [
-  {
-    label: "Scanner haute résolution",
-    icon: (
-      <Ico>
-        <path d="M4 8V6a2 2 0 0 1 2-2h2M20 8V6a2 2 0 0 0-2-2h-2M4 16v2a2 2 0 0 0 2 2h2M20 16v2a2 2 0 0 1-2 2h-2" />
-        <path d="M3 12h18" />
-      </Ico>
-    ),
-  },
-  {
-    label: "Analyses biologiques sur place",
-    icon: (
-      <Ico>
-        <path d="M9 3h6" />
-        <path d="M10 3v14a2 2 0 0 0 4 0V3" />
-        <path d="M10 12h4" />
-      </Ico>
-    ),
-  },
-  {
-    label: "Bloc opératoire aux normes",
-    icon: (
-      <Ico>
-        <path d="M3 19v-9M3 14h18v5" />
-        <path d="M21 19v-5a3 3 0 0 0-3-3h-7v3" />
-        <circle cx="7" cy="11" r="2" />
-      </Ico>
-    ),
-  },
-  {
-    label: "Résultats en 24 h",
-    icon: (
-      <Ico>
-        <circle cx="12" cy="12" r="8" />
-        <path d="M12 8v4l3 2" />
-      </Ico>
-    ),
-  },
-  {
-    label: "Maintenance certifiée",
-    icon: (
-      <Ico>
-        <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
-      </Ico>
-    ),
-  },
-  {
-    label: "Équipe technique formée",
-    icon: (
-      <Ico>
-        <path d="M6 3v5a4 4 0 0 0 8 0V3" />
-        <path d="M10 12v3a5 5 0 0 0 5 5 4 4 0 0 0 4-4v-2" />
-        <circle cx="19" cy="9" r="2" />
-      </Ico>
-    ),
-  },
-];
+export default async function EquipmentPage() {
+  const supabase = await createClient();
+  const [{ data: equipmentData }, { data: highlightsData }] = await Promise.all([
+    supabase
+      .from("equipment")
+      .select("id, name, description, photo_url, sort_order")
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("equipment_highlights")
+      .select("id, icon_slug, label, sort_order")
+      .order("sort_order", { ascending: true }),
+  ]);
 
-export default function EquipmentPage() {
+  const equipment = (equipmentData ?? []) as Equipment[];
+  const highlights = (highlightsData ?? []) as EquipmentHighlight[];
+  const marqueeItems = [...highlights, ...highlights];
+
   return (
     <>
       <Header active="equipment" />
@@ -123,25 +55,15 @@ export default function EquipmentPage() {
             </p>
             <div className="hero-pills">
               <span className="hero-pill">
-                <Ico>
-                  <path d="M4 8V6a2 2 0 0 1 2-2h2M20 8V6a2 2 0 0 0-2-2h-2M4 16v2a2 2 0 0 0 2 2h2M20 16v2a2 2 0 0 1-2 2h-2" />
-                  <path d="M3 12h18" />
-                </Ico>
+                <Icon slug="radiology" className="ico" />
                 Imagerie numérique
               </span>
               <span className="hero-pill">
-                <Ico>
-                  <path d="M9 3h6" />
-                  <path d="M10 3v14a2 2 0 0 0 4 0V3" />
-                  <path d="M10 12h4" />
-                </Ico>
+                <Icon slug="lab" className="ico" />
                 Laboratoire sur site
               </span>
               <span className="hero-pill">
-                <Ico>
-                  <circle cx="12" cy="12" r="8" />
-                  <path d="M12 8v4l3 2" />
-                </Ico>
+                <Icon slug="clock" className="ico" />
                 Résultats rapides
               </span>
             </div>
@@ -151,9 +73,9 @@ export default function EquipmentPage() {
 
       <div className="marquee">
         <div className="marquee-track">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-            <span key={`${item.label}-${i}`}>
-              {item.icon}
+          {marqueeItems.map((item, i) => (
+            <span key={`${item.id}-${i}`}>
+              <Icon slug={item.icon_slug} className="ico" />
               {item.label}
             </span>
           ))}
@@ -162,10 +84,12 @@ export default function EquipmentPage() {
 
       <section className="section">
         <div className="container equip-grid">
-          {EQUIPMENT.map((item, i) => (
-            <Reveal index={i + 1} key={item.name}>
+          {equipment.map((item, i) => (
+            <Reveal index={i + 1} key={item.id}>
               <div className="card equip-card">
-                <div className="photo-placeholder">{item.photo}</div>
+                <div className="photo-placeholder">
+                  {item.photo_url ?? `Photo — ${item.name}`}
+                </div>
                 <strong>{item.name}</strong>
                 <p>{item.description}</p>
               </div>

@@ -1,68 +1,49 @@
-import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { createClient } from "@/lib/supabase/server";
 
-function Ico({ children }: { children: ReactNode }) {
-  return (
-    <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-      {children}
-    </svg>
-  );
+type NewsItem = {
+  id: string;
+  title: string;
+  excerpt: string | null;
+  category: string | null;
+  published_date: string;
+  photo_url: string | null;
+  sort_order: number;
+};
+
+// The "cat" filter chips (data-filter) predate the DB's `category` column,
+// which stores the full French label shown on the card ("Campagne de
+// santé", ...). This maps the known labels back to those filter keys so the
+// existing chip wiring in SiteMotion keeps working; anything unrecognized
+// simply won't match a specific chip (still shows under "Toutes").
+const CATEGORY_FILTER_KEYS: Record<string, string> = {
+  "Campagne de santé": "campagne",
+  "Nouvel équipement": "equipement",
+  Prévention: "prevention",
+  Évènement: "evenement",
+};
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+
+function formatPublishedDate(isoDate: string): string {
+  return DATE_FORMATTER.format(new Date(`${isoDate}T00:00:00`));
 }
 
-const NEWS_ITEMS = [
-  {
-    photo: "Photo — campagne",
-    date: "12 juin 2026",
-    title: "Campagne de dépistage gratuit du diabète",
-    description: "Une semaine de dépistage ouverte à tous, sur rendez-vous.",
-    category: "Campagne de santé",
-    cat: "campagne",
-  },
-  {
-    photo: "Photo — nouvel équipement",
-    date: "28 mai 2026",
-    title: "Un nouvel appareil d'imagerie médicale",
-    description: "La clinique renforce son plateau technique en radiologie.",
-    category: "Nouvel équipement",
-    cat: "equipement",
-  },
-  {
-    photo: "Photo — prévention",
-    date: "03 mai 2026",
-    title: "5 gestes pour prévenir l'hypertension",
-    description: "Les conseils de nos cardiologues pour un cœur en bonne santé.",
-    category: "Prévention",
-    cat: "prevention",
-  },
-  {
-    photo: "Photo — évènement",
-    date: "20 avril 2026",
-    title: "Journée portes ouvertes de la clinique",
-    description: "Venez visiter nos installations et rencontrer nos équipes.",
-    category: "Évènement",
-    cat: "evenement",
-  },
-  {
-    photo: "Photo — campagne",
-    date: "02 avril 2026",
-    title: "Consultations gratuites pour la journée mondiale de la santé",
-    description: "Une initiative de sensibilisation ouverte à la communauté.",
-    category: "Campagne de santé",
-    cat: "campagne",
-  },
-  {
-    photo: "Photo — prévention",
-    date: "15 mars 2026",
-    title: "Bien s'alimenter pendant la grossesse",
-    description: "Les recommandations de notre service de nutrition.",
-    category: "Prévention",
-    cat: "prevention",
-  },
-];
+export default async function NewsPage() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("news_items")
+    .select("id, title, excerpt, category, published_date, photo_url, sort_order")
+    .order("published_date", { ascending: false });
 
-export default function NewsPage() {
+  const newsItems = (data ?? []) as NewsItem[];
+
   return (
     <>
       <Header active="news" />
@@ -89,18 +70,18 @@ export default function NewsPage() {
             </div>
             <div className="hero-pills">
               <span className="hero-pill">
-                <Ico>
+                <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 5h13v14H4z" />
                   <path d="M17 9h3v8a2 2 0 0 1-3 1.7" />
                   <path d="M7 9h7M7 13h7M7 16h4" />
-                </Ico>
+                </svg>
                 Publications mensuelles
               </span>
               <span className="hero-pill">
-                <Ico>
+                <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="3" y="5" width="18" height="16" rx="2" />
                   <path d="M3 10h18M8 3v4M16 3v4" />
-                </Ico>
+                </svg>
                 Agenda des campagnes
               </span>
             </div>
@@ -110,13 +91,18 @@ export default function NewsPage() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container news-full-grid">
-          {NEWS_ITEMS.map((item, i) => (
-            <Reveal index={i + 1} key={item.title}>
-              <div className="card news-full-card" data-cat={item.cat}>
-                <div className="photo-placeholder">{item.photo}</div>
-                <span className="date">{item.date}</span>
+          {newsItems.map((item, i) => (
+            <Reveal index={i + 1} key={item.id}>
+              <div
+                className="card news-full-card"
+                data-cat={(item.category && CATEGORY_FILTER_KEYS[item.category]) || ""}
+              >
+                <div className="photo-placeholder">
+                  {item.photo_url ?? `Photo — ${item.title}`}
+                </div>
+                <span className="date">{formatPublishedDate(item.published_date)}</span>
                 <strong>{item.title}</strong>
-                <p>{item.description}</p>
+                <p>{item.excerpt}</p>
                 <span className="chip cat">{item.category}</span>
               </div>
             </Reveal>
