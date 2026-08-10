@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import { useState, useTransition, type ChangeEvent, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import {
   createEntityRow,
   updateEntityRow,
@@ -9,7 +10,14 @@ import {
   swapSortOrder,
 } from "../_actions/entities";
 
-export type EntityFieldType = "text" | "textarea" | "select" | "boolean" | "number" | "date";
+export type EntityFieldType =
+  | "text"
+  | "textarea"
+  | "select"
+  | "boolean"
+  | "number"
+  | "date"
+  | "image";
 
 export type EntityFieldOption = { value: string; label: string };
 
@@ -68,6 +76,9 @@ export function AdminEntityManager({
   );
   const [formValues, setFormValues] = useState<Record<string, unknown>>({});
   const [error, setError] = useState<string | null>(null);
+  const [imageFieldState, setImageFieldState] = useState<
+    Record<string, { uploading: boolean; error: string | null }>
+  >({});
 
   // `initialRows` comes straight from the parent Server Component's fetch;
   // after any mutation we call `router.refresh()` to re-run that fetch and
@@ -147,6 +158,44 @@ export function AdminEntityManager({
     });
   }
 
+  function handleImageFileChange(field: EntityField, event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setImageFieldState((current) => ({
+      ...current,
+      [field.key]: { uploading: true, error: null },
+    }));
+
+    (async () => {
+      try {
+        const supabase = createClient();
+        const path = `${config.table}/${crypto.randomUUID()}-${file.name}`;
+        const { error: uploadError } = await supabase.storage.from("media").upload(path, file);
+        if (uploadError) throw uploadError;
+
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("media").getPublicUrl(path);
+
+        setFormValues((current) => ({ ...current, [field.key]: publicUrl }));
+        setImageFieldState((current) => ({
+          ...current,
+          [field.key]: { uploading: false, error: null },
+        }));
+      } catch (err) {
+        setImageFieldState((current) => ({
+          ...current,
+          [field.key]: {
+            uploading: false,
+            error: err instanceof Error ? err.message : "Envoi impossible.",
+          },
+        }));
+      }
+    })();
+  }
+
   function renderCellValue(field: EntityField, row: EntityRow) {
     const value = row[field.key];
 
@@ -212,6 +261,32 @@ export function AdminEntityManager({
           />
           <span className="aem-switch-track" />
         </span>
+      );
+    }
+
+    if (field.type === "image") {
+      const uploadState = imageFieldState[field.key];
+      const currentUrl = typeof value === "string" ? value : "";
+      return (
+        <div className="aem-image-field">
+          {currentUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={currentUrl} alt="" className="aem-image-preview" />
+          ) : null}
+          <input
+            id={field.key}
+            type="file"
+            accept="image/*"
+            disabled={uploadState?.uploading}
+            onChange={(event) => handleImageFileChange(field, event)}
+          />
+          {uploadState?.uploading ? (
+            <span className="aem-image-status">Envoi en cours…</span>
+          ) : null}
+          {uploadState?.error ? (
+            <span className="aem-image-error">{uploadState.error}</span>
+          ) : null}
+        </div>
       );
     }
 

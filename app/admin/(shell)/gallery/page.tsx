@@ -17,7 +17,7 @@ const galleryConfig: EntityConfig = {
       required: true,
       placeholder: "ex: locaux, équipe, événements",
     },
-    { key: "photo_url", label: "Photo (URL)", type: "text", showInTable: false },
+    { key: "photo_url", label: "Photo", type: "image", showInTable: false },
     { key: "tall", label: "Format vertical (grande vignette)", type: "boolean" },
   ],
 };

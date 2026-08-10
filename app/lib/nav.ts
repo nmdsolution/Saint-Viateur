@@ -2,6 +2,8 @@ export const NAV_ITEMS = [
   { slug: "", label: "Accueil" },
   { slug: "services", label: "Spécialités" },
   { slug: "equipment", label: "Équipements" },
+  { slug: "mot-direction", label: "Mot de la direction" },
+  { slug: "ils-parlent-de-nous", label: "Ils parlent de nous" },
   { slug: "patient-services", label: "Services patients" },
   { slug: "gallery", label: "Galerie" },
   { slug: "news", label: "Actualités" },
@@ -18,10 +20,12 @@ export const NAV_GROUPS: NavGroup[] = [
   { type: "link", slug: "", label: "Accueil" },
   {
     type: "dropdown",
-    label: "Notre offre médicale",
+    label: "À propos de nous",
     items: [
       { slug: "services", label: "Spécialités" },
       { slug: "equipment", label: "Équipements" },
+      { slug: "mot-direction", label: "Mot de la direction" },
+      { slug: "ils-parlent-de-nous", label: "Ils parlent de nous" },
     ],
   },
   { type: "link", slug: "patient-services", label: "Services patients" },

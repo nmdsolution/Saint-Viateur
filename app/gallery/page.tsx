@@ -77,7 +77,12 @@ export default async function GalleryPage() {
                   data-cat={photo.category}
                   data-zoom={photo.photo_url ?? `Photo — ${photo.label}`}
                 >
-                  {photo.label}
+                  {photo.photo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={photo.photo_url} alt={photo.label} />
+                  ) : (
+                    photo.label
+                  )}
                 </div>
               </Reveal>
             ))}

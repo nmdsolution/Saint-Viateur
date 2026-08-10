@@ -17,6 +17,7 @@ const partnersConfig: EntityConfig = {
   fields: [
     { key: "name", label: "Nom", type: "text", required: true },
     { key: "description", label: "Description", type: "textarea" },
+    { key: "photo_url", label: "Photo (logo)", type: "image", showInTable: false },
     { key: "icon_slug", label: "Icône", type: "text", placeholder: "ex: handshake" },
   ],
 };

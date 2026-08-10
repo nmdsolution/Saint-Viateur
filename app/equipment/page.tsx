@@ -88,7 +88,12 @@ export default async function EquipmentPage() {
             <Reveal index={i + 1} key={item.id}>
               <div className="card equip-card">
                 <div className="photo-placeholder">
-                  {item.photo_url ?? `Photo — ${item.name}`}
+                  {item.photo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.photo_url} alt={item.name} />
+                  ) : (
+                    `Photo — ${item.name}`
+                  )}
                 </div>
                 <strong>{item.name}</strong>
                 <p>{item.description}</p>

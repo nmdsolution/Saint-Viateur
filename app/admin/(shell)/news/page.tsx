@@ -14,7 +14,7 @@ const newsConfig: EntityConfig = {
     { key: "excerpt", label: "Extrait", type: "textarea" },
     { key: "category", label: "Catégorie", type: "text" },
     { key: "published_date", label: "Date de publication", type: "date", required: true },
-    { key: "photo_url", label: "Photo (URL)", type: "text", showInTable: false },
+    { key: "photo_url", label: "Photo", type: "image", showInTable: false },
   ],
 };
 
