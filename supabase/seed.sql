@@ -22,6 +22,61 @@
 -- =============================================================================
 
 -- -----------------------------------------------------------------------------
+-- Seed staff accounts (auth.users + profiles) — so you can log into /admin
+-- right away, without going through the invite-by-email flow first.
+-- -----------------------------------------------------------------------------
+-- This inserts directly into Supabase's internal `auth.users` table. That's
+-- not an officially documented public API, but it's the standard community
+-- pattern for seeding auth users via plain SQL, and it's what lets these
+-- accounts log in immediately (email pre-confirmed, real bcrypt password).
+--
+-- `handle_new_user()` (defined in schema.sql) fires on each insert below and
+-- auto-creates a matching `profiles` row with role 'editor' — the two
+-- `update` statements after just promote the first one to 'admin' and set
+-- both accounts' display names.
+--
+-- CHANGE THESE PASSWORDS (or delete these two rows) before using this
+-- project for anything real — 'ChangeMoi123!' is a placeholder, not meant
+-- for production. Safe to re-run: each insert is skipped if that email
+-- already exists.
+
+create extension if not exists pgcrypto;
+
+insert into auth.users (
+  instance_id, id, aud, role, email, encrypted_password,
+  email_confirmed_at, raw_app_meta_data, raw_user_meta_data,
+  created_at, updated_at, confirmation_token, email_change,
+  email_change_token_new, recovery_token
+)
+select
+  '00000000-0000-0000-0000-000000000000', gen_random_uuid(),
+  'authenticated', 'authenticated', 'admin@cliniquesaintviateur.ci',
+  crypt('ChangeMoi123!', gen_salt('bf')),
+  now(), '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb,
+  now(), now(), '', '', '', ''
+where not exists (select 1 from auth.users where email = 'admin@cliniquesaintviateur.ci');
+
+insert into auth.users (
+  instance_id, id, aud, role, email, encrypted_password,
+  email_confirmed_at, raw_app_meta_data, raw_user_meta_data,
+  created_at, updated_at, confirmation_token, email_change,
+  email_change_token_new, recovery_token
+)
+select
+  '00000000-0000-0000-0000-000000000000', gen_random_uuid(),
+  'authenticated', 'authenticated', 'editeur@cliniquesaintviateur.ci',
+  crypt('ChangeMoi123!', gen_salt('bf')),
+  now(), '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb,
+  now(), now(), '', '', '', ''
+where not exists (select 1 from auth.users where email = 'editeur@cliniquesaintviateur.ci');
+
+update public.profiles set role = 'admin', full_name = 'Administrateur Saint Viateur'
+where id = (select id from auth.users where email = 'admin@cliniquesaintviateur.ci');
+
+update public.profiles set full_name = 'Éditeur Saint Viateur'
+where id = (select id from auth.users where email = 'editeur@cliniquesaintviateur.ci');
+
+-- -----------------------------------------------------------------------------
 -- specialties (app/services/page.tsx)
 -- -----------------------------------------------------------------------------
 
