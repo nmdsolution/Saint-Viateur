@@ -288,7 +288,12 @@ export default async function HomePage() {
               <Reveal index={i + 1} key={item.id}>
                 <div className="card news-card">
                   <div className="photo-placeholder">
-                    {item.photo_url ?? `Photo — ${item.title}`}
+                    {item.photo_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.photo_url} alt={item.title} />
+                    ) : (
+                      `Photo — ${item.title}`
+                    )}
                   </div>
                   <span className="date">{formatPublishedDate(item.published_date)}</span>
                   <strong style={{ display: "block", marginTop: 6 }}>{item.title}</strong>

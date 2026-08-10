@@ -11,7 +11,7 @@ const equipmentConfig: EntityConfig = {
   fields: [
     { key: "name", label: "Nom", type: "text", required: true },
     { key: "description", label: "Description", type: "textarea" },
-    { key: "photo_url", label: "Photo (URL)", type: "text", showInTable: false },
+    { key: "photo_url", label: "Photo", type: "image", showInTable: false },
   ],
 };
 

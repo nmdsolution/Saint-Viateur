@@ -98,7 +98,12 @@ export default async function NewsPage() {
                 data-cat={(item.category && CATEGORY_FILTER_KEYS[item.category]) || ""}
               >
                 <div className="photo-placeholder">
-                  {item.photo_url ?? `Photo — ${item.title}`}
+                  {item.photo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.photo_url} alt={item.title} />
+                  ) : (
+                    `Photo — ${item.title}`
+                  )}
                 </div>
                 <span className="date">{formatPublishedDate(item.published_date)}</span>
                 <strong>{item.title}</strong>

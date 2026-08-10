@@ -315,3 +315,33 @@ create policy "chatbot_messages_select_staff"
   on public.chatbot_messages for select
   to authenticated
   using (public.is_staff());
+
+-- -----------------------------------------------------------------------------
+-- 8. Storage — `media` bucket for admin image-upload fields
+-- -----------------------------------------------------------------------------
+-- Backs the "image" field type in AdminEntityManager (equipment/gallery/news
+-- photos, partner logos, ...): staff upload a file here and the resulting
+-- public URL is stored in the entity's existing `photo_url` text column.
+insert into storage.buckets (id, name, public)
+values ('media', 'media', true)
+on conflict (id) do nothing;
+
+create policy "media_select_public"
+  on storage.objects for select
+  using (bucket_id = 'media');
+
+create policy "media_insert_staff"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'media' and public.is_staff());
+
+create policy "media_update_staff"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'media' and public.is_staff())
+  with check (bucket_id = 'media' and public.is_staff());
+
+create policy "media_delete_staff"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'media' and public.is_staff());

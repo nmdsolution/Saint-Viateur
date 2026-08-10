@@ -241,7 +241,16 @@ export function SiteMotion() {
     const zoomables = Array.from(document.querySelectorAll<HTMLElement>("[data-zoom]"));
     function onZoomClick(this: HTMLElement) {
       if (!lightbox || !frame) return;
-      frame.textContent = this.dataset.zoom || this.textContent?.trim() || "";
+      const zoomValue = this.dataset.zoom || this.textContent?.trim() || "";
+      if (/^https?:\/\//.test(zoomValue)) {
+        frame.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = zoomValue;
+        img.alt = "";
+        frame.appendChild(img);
+      } else {
+        frame.textContent = zoomValue;
+      }
       lightbox.classList.add("open");
     }
     zoomables.forEach((z) => {
