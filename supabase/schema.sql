@@ -94,7 +94,10 @@ $$;
 create table if not exists public.site_settings (
   id int primary key default 1 check (id = 1),
   address text,
+  postal_address text,
   phone text,
+  emergency_phone text,
+  whatsapp_number text,
   email text,
   hours text,
   social_facebook text,
@@ -158,6 +161,7 @@ create table if not exists public.faq_items (
 create table if not exists public.insurances (
   id uuid primary key default gen_random_uuid(),
   name text not null,
+  category text not null default 'locale' check (category in ('locale', 'internationale', 'institution')),
   sort_order int not null default 0
 );
 

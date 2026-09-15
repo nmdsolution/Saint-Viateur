@@ -159,13 +159,49 @@ insert into public.faq_items (question, answer, sort_order) values
   ('Quels documents apporter pour une hospitalisation ?', 'Pièce d''identité, carte d''assurance et lettre d''admission du médecin.', 3),
   ('La clinique recrute-t-elle ?', 'Consultez notre espace recrutement pour les offres en cours.', 4);
 
--- Only the 4 real insurance chips — the "+ Liste complète des partenaires"
--- chip in the source page is a UI affordance, not a real insurer.
-insert into public.insurances (name, sort_order) values
-  ('NSIA Assurances', 1),
-  ('Saham Assurance', 2),
-  ('Allianz CI', 3),
-  ('CNAM', 4);
+-- Real insurers/partners from "Contenu Web - Clinique Médicale Saint-Viateur.pdf",
+-- grouped by category with sort_order sequential within each category.
+insert into public.insurances (name, category, sort_order) values
+  ('Allianz Côte d''Ivoire', 'locale', 1),
+  ('AMGS Africa', 'locale', 2),
+  ('Ankara Services', 'locale', 3),
+  ('Association Susu', 'locale', 4),
+  ('Axa Côte d''Ivoire', 'locale', 5),
+  ('Banque Atlantique Assurance CI', 'locale', 6),
+  ('C.I.M.E.F Assurance', 'locale', 7),
+  ('CNPS Personnel et Retraite', 'locale', 8),
+  ('Comar Assurances', 'locale', 9),
+  ('EC Vitalis Assurances', 'locale', 10),
+  ('GGA Assurances', 'locale', 11),
+  ('Ivoire Santé Plus', 'locale', 12),
+  ('Madgi / MSPCI / MUDCI', 'locale', 13),
+  ('MCI Care', 'locale', 14),
+  ('MU2SCIE-SODECI', 'locale', 15),
+  ('MUGEF-CI', 'locale', 16),
+  ('Munassur', 'locale', 17),
+  ('Mutuelle Sociale Transvie', 'locale', 18),
+  ('Novelia Assurances', 'locale', 19),
+  ('NSIA-CI', 'locale', 20),
+  ('Olea Santé', 'locale', 21),
+  ('SCA Inter', 'locale', 22),
+  ('Serenity SA', 'locale', 23),
+  ('Sogemad', 'locale', 24),
+  ('Sunu Assurances Vie', 'locale', 25),
+  ('Willis Towers Watson', 'locale', 26),
+  ('Cigna', 'internationale', 1),
+  ('Henner Santé', 'internationale', 2),
+  ('MSH International', 'internationale', 3),
+  ('BCEAO', 'institution', 1),
+  ('Commission Bancaire', 'institution', 2),
+  ('BHCI', 'institution', 3),
+  ('Clinique La Providence', 'institution', 4),
+  ('CRRAE-UMOA', 'institution', 5),
+  ('Gestoci', 'institution', 6),
+  ('NSIA Banque', 'institution', 7),
+  ('SICMA', 'institution', 8),
+  ('Société Ivoirienne de Banque (SIB)', 'institution', 9),
+  ('Société Ivoirienne de Raffinage (SIR)', 'institution', 10),
+  ('SPDC', 'institution', 11);
 
 -- -----------------------------------------------------------------------------
 -- partners (app/page.tsx, "Nos partenaires" section)
@@ -208,12 +244,28 @@ insert into public.news_items (title, excerpt, category, published_date, photo_u
 -- site_settings (app/contact/page.tsx + app/components/Footer.tsx)
 -- -----------------------------------------------------------------------------
 -- Social links are left NULL: the Footer currently only has "#" placeholder
--- anchors (no real social URLs exist yet to seed).
-insert into public.site_settings (id, address, phone, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp) values
-  (1, 'Riviera SIDECI, Abidjan, Côte d''Ivoire', '+225 XX XX XX XX XX', 'contact@cliniquesaintviateur.ci', 'Lun–Dim, urgences 24h/24', null, null, null, null)
+-- anchors (no real social URLs exist yet to seed). Email is left as-is too:
+-- it was not part of the clinic's supplied content sheet.
+insert into public.site_settings (
+  id, address, postal_address, phone, emergency_phone, whatsapp_number, email, hours,
+  social_facebook, social_linkedin, social_instagram, social_whatsapp
+) values (
+  1,
+  'Route Akouédo, Sideci - Riviera 3, Cocody, Abidjan, Côte d''Ivoire',
+  '22 BP 289 Abidjan 22',
+  '(+225) 27 22 59 04 17',
+  '(+225) 07 07 09 55 49',
+  '(+225) 01 01 46 65 76',
+  'contact@cliniquesaintviateur.ci',
+  E'Soins et Urgences : Ouverts 24h/24 et 7j/7.\nVisites : Lun–Dim, 12h00–14h00 et 17h00–21h00.\nServices administratifs : Lun–Ven 08h00–18h00, Sam 08h00–12h00.',
+  null, null, null, null
+)
 on conflict (id) do update set
   address = excluded.address,
+  postal_address = excluded.postal_address,
   phone = excluded.phone,
+  emergency_phone = excluded.emergency_phone,
+  whatsapp_number = excluded.whatsapp_number,
   email = excluded.email,
   hours = excluded.hours,
   social_facebook = excluded.social_facebook,

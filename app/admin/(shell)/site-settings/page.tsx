@@ -35,8 +35,38 @@ export default async function SiteSettingsPage({
           </div>
 
           <div className="aem-field">
+            <label htmlFor="postal_address">Adresse postale</label>
+            <input
+              id="postal_address"
+              name="postal_address"
+              type="text"
+              defaultValue={settings?.postal_address ?? ""}
+            />
+          </div>
+
+          <div className="aem-field">
             <label htmlFor="phone">Téléphone</label>
             <input id="phone" name="phone" type="text" defaultValue={settings?.phone ?? ""} />
+          </div>
+
+          <div className="aem-field">
+            <label htmlFor="emergency_phone">Téléphone Urgences</label>
+            <input
+              id="emergency_phone"
+              name="emergency_phone"
+              type="text"
+              defaultValue={settings?.emergency_phone ?? ""}
+            />
+          </div>
+
+          <div className="aem-field">
+            <label htmlFor="whatsapp_number">Mobile &amp; WhatsApp</label>
+            <input
+              id="whatsapp_number"
+              name="whatsapp_number"
+              type="text"
+              defaultValue={settings?.whatsapp_number ?? ""}
+            />
           </div>
 
           <div className="aem-field">

@@ -6,7 +6,10 @@ import { createClient } from "@/lib/supabase/server";
 
 const SITE_SETTINGS_FIELDS = [
   "address",
+  "postal_address",
   "phone",
+  "emergency_phone",
+  "whatsapp_number",
   "email",
   "hours",
   "social_facebook",
