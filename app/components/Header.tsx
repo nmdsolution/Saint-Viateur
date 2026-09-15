@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { NAV_GROUPS, pathFor, type Slug } from "@/app/lib/nav";
 
-export function Header({ active }: { active: Slug }) {
+export function Header({ active }: { active?: Slug }) {
   return (
     <header className="site-header">
       <div className="brand">
