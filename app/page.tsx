@@ -220,9 +220,9 @@ export default async function HomePage() {
               <span className="eyebrow">Nos partenaires</span>
               <h2>Ils nous accompagnent au quotidien</h2>
               <p>
-                Un réseau d&apos;institutions médicales et sanitaires en Côte
-                d&apos;Ivoire pour garantir à nos patients une prise en charge
-                complète et coordonnée.
+                Banques, institutions et entreprises qui font confiance à la
+                clinique pour la prise en charge médicale de leurs
+                collaborateurs et assurés.
               </p>
             </div>
           </Reveal>

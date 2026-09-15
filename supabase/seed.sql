@@ -206,13 +206,23 @@ insert into public.insurances (name, category, sort_order) values
 -- -----------------------------------------------------------------------------
 -- partners (app/page.tsx, "Nos partenaires" section)
 -- -----------------------------------------------------------------------------
+-- Real "Institutions & Entreprises" list from "Contenu Web - Clinique Médicale
+-- Saint-Viateur.pdf" (same source list also seeded into public.insurances
+-- under category = 'institution' for the patient-services page). icon_slug /
+-- photo_url are left null: no real logos exist for these yet, and the Icon
+-- component falls back to a generic icon when slug is null/unmatched.
 insert into public.partners (icon_slug, name, description, photo_url, sort_order) values
-  ('research-institute', 'Institut Pasteur de Côte d''Ivoire', 'Recherche, biologie médicale et référence en santé publique.', '/partners/institut-pasteur.webp', 1),
-  ('hospital', 'CHU de Cocody', 'Centre hospitalier universitaire pour les prises en charge spécialisées.', '/partners/chu-cocody.jpg', 2),
-  ('polyclinic', 'PISAM', 'Polyclinique Internationale Sainte Anne-Marie, partenaire pour les cas complexes.', '/partners/pisam.jpg', 3),
-  ('red-cross', 'Croix-Rouge Côte d''Ivoire', 'Secours d''urgence, sensibilisation et dons de sang.', '/partners/croix-rouge.png', 4),
-  ('blood-bank', 'CNTS', 'Centre National de Transfusion Sanguine — approvisionnement en produits sanguins.', null, 5),
-  ('medical-board', 'Ordre National des Médecins de CI', 'Encadrement déontologique et garantie de la qualité des soins.', '/partners/ordre-medecins.jpg', 6);
+  (null, 'BCEAO', 'Banque Centrale des États de l''Afrique de l''Ouest.', null, 1),
+  (null, 'Commission Bancaire', 'Organe de supervision du secteur bancaire de l''UMOA.', null, 2),
+  (null, 'BHCI', 'Banque de l''Habitat de Côte d''Ivoire.', null, 3),
+  (null, 'Clinique La Providence', 'Établissement de santé partenaire.', null, 4),
+  (null, 'CRRAE-UMOA', 'Caisse Régionale de Retraite des Agents de l''UMOA.', null, 5),
+  (null, 'Gestoci', 'Société de gestion des stocks pétroliers de Côte d''Ivoire.', null, 6),
+  (null, 'NSIA Banque', 'Groupe bancaire NSIA.', null, 7),
+  (null, 'SICMA', 'Entreprise partenaire de la clinique.', null, 8),
+  (null, 'Société Ivoirienne de Banque (SIB)', 'Banque commerciale ivoirienne.', null, 9),
+  (null, 'Société Ivoirienne de Raffinage (SIR)', 'Raffinerie nationale de pétrole de Côte d''Ivoire.', null, 10),
+  (null, 'SPDC', 'Entreprise partenaire de la clinique.', null, 11);
 
 -- -----------------------------------------------------------------------------
 -- gallery_photos (app/gallery/page.tsx)
