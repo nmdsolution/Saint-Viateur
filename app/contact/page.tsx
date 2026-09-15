@@ -14,7 +14,10 @@ function Ico({ children }: { children: ReactNode }) {
 
 type SiteSettings = {
   address: string | null;
+  postal_address: string | null;
   phone: string | null;
+  emergency_phone: string | null;
+  whatsapp_number: string | null;
   email: string | null;
   hours: string | null;
   social_facebook: string | null;
@@ -27,11 +30,16 @@ export default async function ContactPage() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("site_settings")
-    .select("address, phone, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp")
+    .select(
+      "address, postal_address, phone, emergency_phone, whatsapp_number, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp"
+    )
     .eq("id", 1)
     .maybeSingle();
 
   const settings = data as SiteSettings | null;
+  const whatsappHref = settings?.whatsapp_number
+    ? `https://wa.me/${settings.whatsapp_number.replace(/[\s()+]/g, "")}`
+    : undefined;
 
   return (
     <>
@@ -121,12 +129,47 @@ export default async function ContactPage() {
                 <div className="info-row">
                   <div className="icon-badge">
                     <Ico>
+                      <rect x="3" y="5" width="18" height="14" rx="2" />
+                      <path d="M3 8l9 6 9-6" />
+                    </Ico>
+                  </div>
+                  <div>
+                    <strong>Adresse postale</strong>
+                    <span>{settings?.postal_address}</span>
+                  </div>
+                </div>
+                <div className="info-row">
+                  <div className="icon-badge">
+                    <Ico>
                       <path d="M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z" />
                     </Ico>
                   </div>
                   <div>
                     <strong>Téléphone</strong>
                     <span>{settings?.phone}</span>
+                  </div>
+                </div>
+                <div className="info-row">
+                  <div className="icon-badge">
+                    <Ico>
+                      <path d="M20 15a3 3 0 0 1-3 3H9l-5 3V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3z" />
+                    </Ico>
+                  </div>
+                  <div>
+                    <strong>Mobile &amp; WhatsApp</strong>
+                    <span>{settings?.whatsapp_number}</span>
+                  </div>
+                </div>
+                <div className="info-row">
+                  <div className="icon-badge">
+                    <Ico>
+                      <path d="M12 9v4M12 17h.01" />
+                      <path d="M10.3 3.9L1.8 18a1.5 1.5 0 0 0 1.3 2.2h17.8a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z" />
+                    </Ico>
+                  </div>
+                  <div>
+                    <strong>Urgences</strong>
+                    <span>{settings?.emergency_phone}</span>
                   </div>
                 </div>
                 <div className="info-row">
@@ -150,7 +193,7 @@ export default async function ContactPage() {
                   </div>
                   <div>
                     <strong>Horaires</strong>
-                    <span>{settings?.hours}</span>
+                    <span style={{ whiteSpace: "pre-line" }}>{settings?.hours}</span>
                   </div>
                 </div>
                 <div className="photo-placeholder map-placeholder">Carte Google Maps</div>
@@ -165,12 +208,17 @@ export default async function ContactPage() {
                     Réponse rapide pour vos questions
                   </span>
                 </div>
-                <button className="btn btn-primary">
+                <a
+                  className="btn btn-primary"
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Ico>
                     <path d="M20 15a3 3 0 0 1-3 3H9l-5 3V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3z" />
                   </Ico>{" "}
                   Écrire sur WhatsApp
-                </button>
+                </a>
               </div>
 
               <div style={{ marginTop: 20 }}>

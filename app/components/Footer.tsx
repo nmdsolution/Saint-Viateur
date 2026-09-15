@@ -4,7 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 
 type SiteSettings = {
   address: string | null;
+  postal_address: string | null;
   phone: string | null;
+  emergency_phone: string | null;
+  whatsapp_number: string | null;
   email: string | null;
   hours: string | null;
   social_facebook: string | null;
@@ -17,7 +20,9 @@ export async function Footer() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("site_settings")
-    .select("address, phone, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp")
+    .select(
+      "address, postal_address, phone, emergency_phone, whatsapp_number, email, hours, social_facebook, social_linkedin, social_instagram, social_whatsapp"
+    )
     .eq("id", 1)
     .maybeSingle();
 
@@ -88,6 +93,7 @@ export async function Footer() {
           <Link href={pathFor("contact")}>Formulaire de contact</Link>
           {phoneHref && <a href={phoneHref}>{settings?.phone}</a>}
           {settings?.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
+          <Link href="/confidentialite">Politique de confidentialité</Link>
         </div>
       </div>
       <div className="bottom">

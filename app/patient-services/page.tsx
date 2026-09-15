@@ -20,10 +20,19 @@ type FaqItem = {
   sort_order: number;
 };
 
+type InsuranceCategory = "locale" | "internationale" | "institution";
+
 type Insurance = {
   id: string;
   name: string;
+  category: InsuranceCategory;
   sort_order: number;
+};
+
+const INSURANCE_CATEGORY_LABELS: Record<InsuranceCategory, string> = {
+  locale: "Assurances locales",
+  internationale: "Assurances internationales",
+  institution: "Institutions & entreprises",
 };
 
 export default async function PatientServicesPage() {
@@ -39,7 +48,8 @@ export default async function PatientServicesPage() {
       .order("sort_order", { ascending: true }),
     supabase
       .from("insurances")
-      .select("id, name, sort_order")
+      .select("id, name, category, sort_order")
+      .order("category", { ascending: true })
       .order("sort_order", { ascending: true }),
   ]);
 
@@ -47,6 +57,14 @@ export default async function PatientServicesPage() {
   const faqItems = (faqData ?? []) as FaqItem[];
   const insurances = (insuranceData ?? []) as Insurance[];
   const firstFaqId = faqItems[0]?.id;
+  const insurancesByCategory = (
+    ["locale", "internationale", "institution"] as InsuranceCategory[]
+  )
+    .map((category) => ({
+      category,
+      items: insurances.filter((insurance) => insurance.category === category),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <>
@@ -111,13 +129,33 @@ export default async function PatientServicesPage() {
             </div>
           </Reveal>
           <Reveal index={0}>
+            <div className="card" style={{ marginBottom: 24 }}>
+              {insurancesByCategory.map((group) => (
+                <div key={group.category} style={{ marginBottom: 18 }}>
+                  <strong style={{ display: "block", marginBottom: 10, fontSize: "13.5px" }}>
+                    {INSURANCE_CATEGORY_LABELS[group.category]}
+                  </strong>
+                  <div className="insurance-row">
+                    {group.items.map((insurance) => (
+                      <span className="chip chip-neutral" key={insurance.id}>
+                        {insurance.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal index={0}>
             <div className="card" style={{ marginBottom: 52 }}>
+              <strong style={{ display: "block", marginBottom: 10, fontSize: "13.5px" }}>
+                Moyens de paiement acceptés
+              </strong>
               <div className="insurance-row">
-                {insurances.map((insurance) => (
-                  <span className="chip chip-neutral" key={insurance.id}>
-                    {insurance.name}
-                  </span>
-                ))}
+                <span className="chip chip-neutral">Espèces</span>
+                <span className="chip chip-neutral">Cartes Bancaires (VISA, Mastercard)</span>
+                <span className="chip chip-neutral">Mobile Money (Orange Money, Wave)</span>
               </div>
             </div>
           </Reveal>
