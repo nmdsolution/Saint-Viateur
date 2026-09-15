@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
@@ -68,10 +67,18 @@ export default async function HomePage() {
       <Header active="" />
 
       <section className="hero">
-        <div className="blob blob-a" />
-        <div className="blob blob-b" />
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          src="/hero-medoc-home.mp4"
+        />
+        <div className="hero-video-overlay" />
         <Reveal index={0}>
-          <div>
+          <div className="hero-content">
             <span className="eyebrow">Clinique médicale pluridisciplinaire</span>
             <h1>
               Votre santé, entre des <span className="accent">mains de confiance</span>
@@ -103,17 +110,6 @@ export default async function HomePage() {
                 <span>Équipements de pointe</span>
               </div>
             </div>
-          </div>
-        </Reveal>
-        <Reveal index={1}>
-          <div className="hero-visual">
-            <Image
-              src="/logo.png"
-              alt="Bâtiment de la clinique"
-              width={897}
-              height={726}
-              style={{ width: "100%", height: "auto" }}
-            />
           </div>
         </Reveal>
       </section>
