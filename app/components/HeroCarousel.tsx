@@ -89,9 +89,9 @@ export function HeroCarousel() {
           aria-hidden="true"
           src="/hero-medoc-home.mp4"
         />
-        <div className="hero-video-overlay" />
-        <div className="hero-content">
-          <HeroText />
+        <div className="hero-actions">
+          <button className="btn btn-primary">Prendre rendez-vous</button>
+          <button className="btn btn-outline">Découvrir nos services</button>
         </div>
       </div>
     </div>
