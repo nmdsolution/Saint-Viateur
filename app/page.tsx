@@ -1,10 +1,12 @@
+import Link from "next/link";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Icon } from "@/app/components/IconRegistry";
 import { createClient } from "@/lib/supabase/server";
-import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS } from "@/app/lib/homeCardPhotos";
+import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS, DIRECTOR_SECTION_PHOTO } from "@/app/lib/homeCardPhotos";
+import { pathFor } from "@/app/lib/nav";
 
 type FeaturedSpecialty = {
   id: string;
@@ -119,6 +121,44 @@ export default async function HomePage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <Reveal index={0}>
+            <div className="section-header">
+              <span className="eyebrow">À propos de nous</span>
+              <h2>Mot de la direction</h2>
+            </div>
+          </Reveal>
+          <Reveal index={1}>
+            <div className="card director-card">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="director-photo"
+                src={DIRECTOR_SECTION_PHOTO}
+                alt="Clinique Médicale Saint-Viateur"
+              />
+              <div className="director-quote">
+                <p>
+                  La santé est un don précieux qu&apos;il est de notre devoir
+                  de préserver, de protéger et de restaurer avec le plus
+                  grand dévouement. Au sein de la Clinique médicale
+                  Saint-Viateur, nous considérons que soigner est bien plus
+                  qu&apos;une profession : c&apos;est une véritable vocation,
+                  portée par l&apos;amour du prochain et une rigueur
+                  scientifique sans compromis.
+                </p>
+                <div className="director-signature">
+                  <strong>— La Direction Générale</strong>
+                </div>
+                <Link href={pathFor("mot-direction")} className="btn btn-outline btn-sm">
+                  Lire la suite
+                </Link>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
