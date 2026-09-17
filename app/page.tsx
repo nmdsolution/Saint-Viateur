@@ -4,7 +4,7 @@ import { Reveal } from "@/app/components/Reveal";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Icon } from "@/app/components/IconRegistry";
 import { createClient } from "@/lib/supabase/server";
-import { WHY_CARD_PHOTOS } from "@/app/lib/homeCardPhotos";
+import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS } from "@/app/lib/homeCardPhotos";
 
 type FeaturedSpecialty = {
   id: string;
@@ -95,17 +95,29 @@ export default async function HomePage() {
             </div>
           </Reveal>
           <div className="services-grid">
-            {featuredSpecialties.map((item, i) => (
-              <Reveal index={i + 1} key={item.id}>
-                <div className="card service-card">
-                  <div className="icon-badge">
-                    <Icon slug={item.icon_slug} className="ico" />
+            {featuredSpecialties.map((item, i) => {
+              const photoUrl = HOME_CARD_PHOTOS[item.icon_slug ?? ""];
+              return (
+                <Reveal index={i + 1} key={item.id}>
+                  <div
+                    className={`card service-card${photoUrl ? " service-card-photo" : ""}`}
+                    style={
+                      photoUrl
+                        ? {
+                            backgroundImage: `linear-gradient(180deg, rgba(7,61,87,0.35) 0%, var(--color-primary-darker) 100%), url(${photoUrl})`,
+                          }
+                        : undefined
+                    }
+                  >
+                    <div className="icon-badge">
+                      <Icon slug={item.icon_slug} className="ico" />
+                    </div>
+                    <strong>{item.name}</strong>
+                    {item.description && <p>{item.description}</p>}
                   </div>
-                  <strong>{item.name}</strong>
-                  {item.description && <p>{item.description}</p>}
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
