@@ -10,3 +10,6 @@ export const WHY_CARD_PHOTOS: Record<string, string> = {
   multilingual: "https://images.pexels.com/photos/7659869/pexels-photo-7659869.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
   insurance: "https://images.pexels.com/photos/6809657/pexels-photo-6809657.jpeg?auto=compress&cs=tinysrgb&w=800&q=75",
 };
+
+export const DIRECTOR_SECTION_PHOTO =
+  "https://images.pexels.com/photos/33812025/pexels-photo-33812025.jpeg?auto=compress&cs=tinysrgb&w=800&q=75";
