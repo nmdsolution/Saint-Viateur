@@ -324,6 +324,16 @@ a { color: inherit; text-decoration: none; }
 .service-card-photo:hover .icon-badge { background: var(--color-primary); color: #fff; }
 .service-card-photo strong { color: #fff; }
 .service-card-photo p { color: rgba(255,255,255,0.85); }
+.why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.why-card { text-align: center; padding: 10px; }
+.why-card .icon-badge { margin: 0 auto 14px; }
+.why-card-photo {
+  background-size: cover; background-position: center; border-color: transparent;
+}
+.why-card-photo .icon-badge { background: rgba(255,255,255,0.16); color: #fff; }
+.why-card-photo:hover .icon-badge { background: var(--color-primary); color: #fff; }
+.why-card-photo strong { color: #fff; }
+.why-card-photo p { color: rgba(255,255,255,0.85); }
 .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .partner-card { text-align: center; padding: 28px 22px; }
 .partner-card .icon-badge { margin: 0 auto 14px; width: 52px; height: 52px; border-radius: 14px; }
@@ -555,7 +565,7 @@ html.js .reveal.in-view { opacity: 1; transform: none; }
   .hero-slide-logo { grid-template-columns: 1fr; }
   .section { padding: 56px 24px; }
   .services-grid, .service-grid, .gallery-grid, .news-grid, .news-full-grid, .equip-grid, .specialty-list, .partners-grid, .press-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  .contact-grid { grid-template-columns: 1fr !important; }
+  .why-grid, .contact-grid { grid-template-columns: 1fr !important; }
   .director-card { flex-direction: column; }
   .director-photo { width: 100%; height: 240px; }
   .cta-band { flex-direction: column; gap: 20px; align-items: flex-start; margin: 0 24px 56px; }

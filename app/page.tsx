@@ -5,7 +5,7 @@ import { Reveal } from "@/app/components/Reveal";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Icon } from "@/app/components/IconRegistry";
 import { createClient } from "@/lib/supabase/server";
-import { HOME_CARD_PHOTOS, DIRECTOR_SECTION_PHOTO } from "@/app/lib/homeCardPhotos";
+import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS, DIRECTOR_SECTION_PHOTO } from "@/app/lib/homeCardPhotos";
 import { pathFor } from "@/app/lib/nav";
 
 type FeaturedSpecialty = {
@@ -260,6 +260,77 @@ export default async function HomePage() {
           </div>
         </div>
       </Reveal>
+
+      <section className="section">
+        <div className="container">
+          <Reveal index={0}>
+            <div className="section-header">
+              <span className="eyebrow">Pourquoi nous choisir</span>
+              <h2>Une clinique pensée pour votre tranquillité</h2>
+            </div>
+          </Reveal>
+          <div className="why-grid">
+            <Reveal index={1}>
+              <div
+                className="why-card card why-card-photo"
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(7,61,87,0.35) 0%, var(--color-primary-darker) 100%), url(${WHY_CARD_PHOTOS.equipment})`,
+                }}
+              >
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 21V7l8-4 8 4v14" />
+                    <path d="M12 10v6M9 13h6" />
+                  </svg>
+                </div>
+                <strong>Équipements modernes</strong>
+                <p style={{ fontSize: "13.5px" }}>
+                  Imagerie, laboratoire et bloc opératoire aux normes actuelles.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal index={2}>
+              <div
+                className="why-card card why-card-photo"
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(7,61,87,0.35) 0%, var(--color-primary-darker) 100%), url(${WHY_CARD_PHOTOS.multilingual})`,
+                }}
+              >
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8" />
+                    <path d="M4 12h16" />
+                    <path d="M12 4c2.5 2.4 2.5 13.6 0 16-2.5-2.4-2.5-13.6 0-16z" />
+                  </svg>
+                </div>
+                <strong>Équipe multilingue</strong>
+                <p style={{ fontSize: "13.5px" }}>
+                  Consultations en français, anglais et langues locales.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal index={3}>
+              <div
+                className="why-card card why-card-photo"
+                style={{
+                  backgroundImage: `linear-gradient(180deg, rgba(7,61,87,0.35) 0%, var(--color-primary-darker) 100%), url(${WHY_CARD_PHOTOS.insurance})`,
+                }}
+              >
+                <div className="icon-badge">
+                  <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="6" width="18" height="12" rx="2" />
+                    <path d="M3 10h18M7 15h4" />
+                  </svg>
+                </div>
+                <strong>Assurances acceptées</strong>
+                <p style={{ fontSize: "13.5px" }}>
+                  Large réseau de partenaires et assurances conventionnées.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </>
