@@ -150,6 +150,14 @@ export default async function HomePage() {
                   portée par l&apos;amour du prochain et une rigueur
                   scientifique sans compromis.
                 </p>
+                <p>
+                  Pour répondre efficacement aux attentes des populations et
+                  nous hisser au rang de structure sanitaire
+                  d&apos;excellence, la Clinique Médicale Saint Viateur
+                  continue d&apos;améliorer son plateau technique afin de
+                  maintenir sa place au rang des structures
+                  d&apos;excellence.
+                </p>
                 <div className="director-signature">
                   <strong>— La Direction Générale</strong>
                 </div>
