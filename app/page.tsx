@@ -110,7 +110,7 @@ export default async function HomePage() {
             </div>
           </Reveal>
           <Reveal index={1}>
-            <div className="card director-card">
+            <div className="card director-card director-card--compact">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="director-photo"
