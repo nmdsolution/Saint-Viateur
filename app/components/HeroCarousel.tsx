@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties, type FocusEvent } from "react";
 import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { CountUp } from "./CountUp";
@@ -9,19 +9,31 @@ const SLIDE_INTERVAL_MS = 5000;
 
 export function HeroCarousel() {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
+      if (paused) return;
       setActive((current) => (current === 0 ? 1 : 0));
     }, SLIDE_INTERVAL_MS);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
+
+  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+      setPaused(false);
+    }
+  };
 
   return (
     <>
       <div
         className="hero-track"
         style={{ "--active": active } as CSSProperties}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={handleBlur}
       >
         <div
           className="hero-slide hero-slide-logo"

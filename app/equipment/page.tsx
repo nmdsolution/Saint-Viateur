@@ -2,6 +2,7 @@ import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
 import { Icon } from "@/app/components/IconRegistry";
+import { PageHero } from "@/app/components/PageHero";
 import { createClient } from "@/lib/supabase/server";
 
 type Equipment = {
@@ -40,36 +41,31 @@ export default async function EquipmentPage() {
     <>
       <Header active="equipment" />
 
-      <section className="page-hero">
-        <div className="blob blob-a" />
-        <div className="blob blob-c" />
-        <Reveal index={0}>
-          <div>
-            <span className="eyebrow">Plateau technique</span>
-            <h1>
-              Des équipements médicaux <em>modernes</em>
-            </h1>
-            <p>
-              Un investissement continu dans la technologie pour un diagnostic
-              plus rapide et plus précis.
-            </p>
-            <div className="hero-pills">
-              <span className="hero-pill">
-                <Icon slug="radiology" className="ico" />
-                Imagerie numérique
-              </span>
-              <span className="hero-pill">
-                <Icon slug="lab" className="ico" />
-                Laboratoire sur site
-              </span>
-              <span className="hero-pill">
-                <Icon slug="clock" className="ico" />
-                Résultats rapides
-              </span>
-            </div>
-          </div>
-        </Reveal>
-      </section>
+      <PageHero
+        eyebrow="Plateau technique"
+        title={
+          <>
+            Des équipements médicaux <em>modernes</em>
+          </>
+        }
+        description="Un investissement continu dans la technologie pour un diagnostic plus rapide et plus précis."
+        videoSrc="/hero-medoc-home.mp4"
+      >
+        <div className="hero-pills">
+          <span className="hero-pill">
+            <Icon slug="radiology" className="ico" />
+            Imagerie numérique
+          </span>
+          <span className="hero-pill">
+            <Icon slug="lab" className="ico" />
+            Laboratoire sur site
+          </span>
+          <span className="hero-pill">
+            <Icon slug="clock" className="ico" />
+            Résultats rapides
+          </span>
+        </div>
+      </PageHero>
 
       <div className="marquee">
         <div className="marquee-track">

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { PageHero } from "@/app/components/PageHero";
 
 function Ico({ children }: { children: ReactNode }) {
   return (
@@ -64,22 +65,16 @@ export default function NotreIdentitePage() {
     <>
       <Header active="notre-identite" />
 
-      <section className="page-hero">
-        <div className="blob blob-a" />
-        <div className="blob blob-c" />
-        <Reveal index={0}>
-          <div>
-            <span className="eyebrow">À propos de nous</span>
-            <h1>
-              Notre <em>identité</em>
-            </h1>
-            <p>
-              Notre mission, notre vision et les valeurs qui animent chaque
-              jour les équipes de la Clinique Médicale Saint Viateur.
-            </p>
-          </div>
-        </Reveal>
-      </section>
+      <PageHero
+        eyebrow="À propos de nous"
+        title={
+          <>
+            Notre <em>identité</em>
+          </>
+        }
+        description="Notre mission, notre vision et les valeurs qui animent chaque jour les équipes de la Clinique Médicale Saint Viateur."
+        videoSrc="/hero-medoc-home.mp4"
+      />
 
       <section className="section">
         <div className="container">

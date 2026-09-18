@@ -25,26 +25,9 @@ type Partner = {
   sort_order: number;
 };
 
-type NewsPreviewItem = {
-  id: string;
-  title: string;
-  published_date: string;
-  photo_url: string | null;
-};
-
-const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-});
-
-function formatPublishedDate(isoDate: string): string {
-  return DATE_FORMATTER.format(new Date(`${isoDate}T00:00:00`));
-}
-
 export default async function HomePage() {
   const supabase = await createClient();
-  const [{ data: featuredData }, { data: partnersData }, { data: newsData }] = await Promise.all([
+  const [{ data: featuredData }, { data: partnersData }] = await Promise.all([
     supabase
       .from("specialties")
       .select("id, name, icon_slug, description, sort_order")
@@ -54,16 +37,10 @@ export default async function HomePage() {
       .from("partners")
       .select("id, icon_slug, name, description, photo_url, sort_order")
       .order("sort_order", { ascending: true }),
-    supabase
-      .from("news_items")
-      .select("id, title, published_date, photo_url")
-      .order("published_date", { ascending: false })
-      .limit(3),
   ]);
 
   const featuredSpecialties = (featuredData ?? []) as FeaturedSpecialty[];
   const partners = (partnersData ?? []) as Partner[];
-  const newsPreview = (newsData ?? []) as NewsPreviewItem[];
 
   return (
     <>
@@ -167,35 +144,6 @@ export default async function HomePage() {
               </div>
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <Reveal index={0}>
-            <div className="section-header">
-              <span className="eyebrow">Actualités</span>
-              <h2>Ce qui se passe à la clinique</h2>
-            </div>
-          </Reveal>
-          <div className="news-grid">
-            {newsPreview.map((item, i) => (
-              <Reveal index={i + 1} key={item.id}>
-                <div className="card news-card">
-                  <div className="photo-placeholder">
-                    {item.photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.photo_url} alt={item.title} />
-                    ) : (
-                      `Photo — ${item.title}`
-                    )}
-                  </div>
-                  <span className="date">{formatPublishedDate(item.published_date)}</span>
-                  <strong style={{ display: "block", marginTop: 6 }}>{item.title}</strong>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

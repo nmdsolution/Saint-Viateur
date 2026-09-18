@@ -2,6 +2,7 @@ import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
 import { Icon } from "@/app/components/IconRegistry";
+import { PageHero } from "@/app/components/PageHero";
 import { createClient } from "@/lib/supabase/server";
 
 type Specialty = {
@@ -28,50 +29,44 @@ export default async function ServicesPage() {
     <>
       <Header active="services" />
 
-      <section className="page-hero">
-        <div className="blob blob-a" />
-        <div className="blob blob-c" />
-        <Reveal index={0}>
-          <div>
-            <span className="eyebrow">Répertoire des spécialités</span>
-            <h1>
-              <em>{specialties.length} spécialités</em> médicales, une seule adresse
-            </h1>
-            <p>
-              De la médecine générale à la chirurgie spécialisée, retrouvez
-              l&apos;ensemble des disciplines proposées à la clinique. Cliquez
-              un filtre pour explorer.
-            </p>
-            <div className="filters">
-              <span className="chip is-active" data-filter="all">Toutes</span>
-              <span className="chip" data-filter="medecine">Médecine</span>
-              <span className="chip" data-filter="chirurgie">Chirurgie</span>
-              <span className="chip" data-filter="technique">Plateau technique</span>
-            </div>
-            <div className="hero-pills">
-              <span className="hero-pill">
-                <Icon slug="stethoscope" className="ico" />
-                +{specialties.length} disciplines
-              </span>
-              <span className="hero-pill">
-                <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8" />
-                  <path d="M4 12h16" />
-                  <path d="M12 4c2.5 2.4 2.5 13.6 0 16-2.5-2.4-2.5-13.6 0-16z" />
-                </svg>
-                Équipe multilingue
-              </span>
-              <span className="hero-pill">
-                <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8" />
-                  <path d="M12 8v4l3 2" />
-                </svg>
-                Consultations 7j/7
-              </span>
-            </div>
-          </div>
-        </Reveal>
-      </section>
+      <PageHero
+        eyebrow="Répertoire des spécialités"
+        title={
+          <>
+            <em>{specialties.length} spécialités</em> médicales, une seule adresse
+          </>
+        }
+        description="De la médecine générale à la chirurgie spécialisée, retrouvez l'ensemble des disciplines proposées à la clinique. Cliquez un filtre pour explorer."
+        videoSrc="/hero-medoc-home.mp4"
+      >
+        <div className="filters">
+          <span className="chip is-active" data-filter="all">Toutes</span>
+          <span className="chip" data-filter="medecine">Médecine</span>
+          <span className="chip" data-filter="chirurgie">Chirurgie</span>
+          <span className="chip" data-filter="technique">Plateau technique</span>
+        </div>
+        <div className="hero-pills">
+          <span className="hero-pill">
+            <Icon slug="stethoscope" className="ico" />
+            +{specialties.length} disciplines
+          </span>
+          <span className="hero-pill">
+            <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M4 12h16" />
+              <path d="M12 4c2.5 2.4 2.5 13.6 0 16-2.5-2.4-2.5-13.6 0-16z" />
+            </svg>
+            Équipe multilingue
+          </span>
+          <span className="hero-pill">
+            <svg className="ico" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M12 8v4l3 2" />
+            </svg>
+            Consultations 7j/7
+          </span>
+        </div>
+      </PageHero>
 
       <div className="lang-strip">
         <strong style={{ color: "var(--color-ink)" }}>Langues parlées :</strong>

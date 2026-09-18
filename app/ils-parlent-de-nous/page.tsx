@@ -1,6 +1,7 @@
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { PageHero } from "@/app/components/PageHero";
 
 // PROVISIONAL CONTENT — unlike the homepage "Nos partenaires" section (which
 // names real institutions as an explicitly-flagged provisional placeholder,
@@ -15,22 +16,16 @@ export default function IlsParlentDeNousPage() {
     <>
       <Header active="ils-parlent-de-nous" />
 
-      <section className="page-hero">
-        <div className="blob blob-a" />
-        <div className="blob blob-c" />
-        <Reveal index={0}>
-          <div>
-            <span className="eyebrow">À propos de nous</span>
-            <h1>
-              Ils parlent <em>de nous</em>
-            </h1>
-            <p>
-              La presse et les médias qui évoquent la Clinique Médicale Saint
-              Viateur.
-            </p>
-          </div>
-        </Reveal>
-      </section>
+      <PageHero
+        eyebrow="À propos de nous"
+        title={
+          <>
+            Ils parlent <em>de nous</em>
+          </>
+        }
+        description="La presse et les médias qui évoquent la Clinique Médicale Saint Viateur."
+        videoSrc="/hero-medoc-home.mp4"
+      />
 
       <section className="section">
         <div className="container">
