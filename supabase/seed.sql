@@ -208,19 +208,21 @@ insert into public.insurances (name, category, sort_order) values
 -- -----------------------------------------------------------------------------
 -- Real "Institutions & Entreprises" list from "Contenu Web - Clinique Médicale
 -- Saint-Viateur.pdf" (same source list also seeded into public.insurances
--- under category = 'institution' for the patient-services page). icon_slug /
--- photo_url are left null: no real logos exist for these yet, and the Icon
--- component falls back to a generic icon when slug is null/unmatched.
+-- under category = 'institution' for the patient-services page). icon_slug is
+-- left null throughout. photo_url now points at real logo files in public/
+-- for 8 of the 11 rows; the remaining 3 (NSIA Banque, Société Ivoirienne de
+-- Raffinage (SIR), SPDC) have no logo file yet and stay null, so the Icon
+-- component falls back to a generic icon for those.
 insert into public.partners (icon_slug, name, description, photo_url, sort_order) values
-  (null, 'BCEAO', 'Banque Centrale des États de l''Afrique de l''Ouest.', null, 1),
-  (null, 'Commission Bancaire', 'Organe de supervision du secteur bancaire de l''UMOA.', null, 2),
-  (null, 'BHCI', 'Banque de l''Habitat de Côte d''Ivoire.', null, 3),
-  (null, 'Clinique La Providence', 'Établissement de santé partenaire.', null, 4),
-  (null, 'CRRAE-UMOA', 'Caisse Régionale de Retraite des Agents de l''UMOA.', null, 5),
-  (null, 'Gestoci', 'Société de gestion des stocks pétroliers de Côte d''Ivoire.', null, 6),
+  (null, 'BCEAO', 'Banque Centrale des États de l''Afrique de l''Ouest.', '/BCEAO.png', 1),
+  (null, 'Commission Bancaire', 'Organe de supervision du secteur bancaire de l''UMOA.', '/Commission Bancaire.jpg', 2),
+  (null, 'BHCI', 'Banque de l''Habitat de Côte d''Ivoire.', '/BHCI.png', 3),
+  (null, 'Clinique La Providence', 'Établissement de santé partenaire.', '/Clinique La Providence.png', 4),
+  (null, 'CRRAE-UMOA', 'Caisse Régionale de Retraite des Agents de l''UMOA.', '/CRRAE-UMOA.jpg', 5),
+  (null, 'Gestoci', 'Société de gestion des stocks pétroliers de Côte d''Ivoire.', '/Gestoci.jpg', 6),
   (null, 'NSIA Banque', 'Groupe bancaire NSIA.', null, 7),
-  (null, 'SICMA', 'Entreprise partenaire de la clinique.', null, 8),
-  (null, 'Société Ivoirienne de Banque (SIB)', 'Banque commerciale ivoirienne.', null, 9),
+  (null, 'SICMA', 'Entreprise partenaire de la clinique.', '/SICMA.png', 8),
+  (null, 'Société Ivoirienne de Banque (SIB)', 'Banque commerciale ivoirienne.', '/Société Ivoirienne de Banque (SIB).jpg', 9),
   (null, 'Société Ivoirienne de Raffinage (SIR)', 'Raffinerie nationale de pétrole de Côte d''Ivoire.', null, 10),
   (null, 'SPDC', 'Entreprise partenaire de la clinique.', null, 11);
 
