@@ -5,7 +5,7 @@ import { Reveal } from "@/app/components/Reveal";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Icon } from "@/app/components/IconRegistry";
 import { createClient } from "@/lib/supabase/server";
-import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS, DIRECTOR_SECTION_PHOTO } from "@/app/lib/homeCardPhotos";
+import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS } from "@/app/lib/homeCardPhotos";
 import { pathFor } from "@/app/lib/nav";
 
 type FeaturedSpecialty = {
@@ -114,7 +114,7 @@ export default async function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="director-photo"
-                src={DIRECTOR_SECTION_PHOTO}
+                src="/logo.png"
                 alt="Clinique Médicale Saint-Viateur"
               />
               <div className="director-quote">
