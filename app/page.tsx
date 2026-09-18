@@ -1,12 +1,10 @@
-import Link from "next/link";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Icon } from "@/app/components/IconRegistry";
 import { createClient } from "@/lib/supabase/server";
-import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS, DIRECTOR_SECTION_PHOTO } from "@/app/lib/homeCardPhotos";
-import { pathFor } from "@/app/lib/nav";
+import { HOME_CARD_PHOTOS, WHY_CARD_PHOTOS } from "@/app/lib/homeCardPhotos";
 
 type FeaturedSpecialty = {
   id: string;
@@ -25,26 +23,9 @@ type Partner = {
   sort_order: number;
 };
 
-type NewsPreviewItem = {
-  id: string;
-  title: string;
-  published_date: string;
-  photo_url: string | null;
-};
-
-const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-});
-
-function formatPublishedDate(isoDate: string): string {
-  return DATE_FORMATTER.format(new Date(`${isoDate}T00:00:00`));
-}
-
 export default async function HomePage() {
   const supabase = await createClient();
-  const [{ data: featuredData }, { data: partnersData }, { data: newsData }] = await Promise.all([
+  const [{ data: featuredData }, { data: partnersData }] = await Promise.all([
     supabase
       .from("specialties")
       .select("id, name, icon_slug, description, sort_order")
@@ -54,16 +35,10 @@ export default async function HomePage() {
       .from("partners")
       .select("id, icon_slug, name, description, photo_url, sort_order")
       .order("sort_order", { ascending: true }),
-    supabase
-      .from("news_items")
-      .select("id, title, published_date, photo_url")
-      .order("published_date", { ascending: false })
-      .limit(3),
   ]);
 
   const featuredSpecialties = (featuredData ?? []) as FeaturedSpecialty[];
   const partners = (partnersData ?? []) as Partner[];
-  const newsPreview = (newsData ?? []) as NewsPreviewItem[];
 
   return (
     <>
@@ -120,81 +95,6 @@ export default async function HomePage() {
                 </Reveal>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <Reveal index={0}>
-            <div className="section-header">
-              <span className="eyebrow">À propos de nous</span>
-              <h2>Mot de la direction</h2>
-            </div>
-          </Reveal>
-          <Reveal index={1}>
-            <div className="card director-card">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="director-photo"
-                src={DIRECTOR_SECTION_PHOTO}
-                alt="Clinique Médicale Saint-Viateur"
-              />
-              <div className="director-quote">
-                <p>
-                  La santé est un don précieux qu&apos;il est de notre devoir
-                  de préserver, de protéger et de restaurer avec le plus
-                  grand dévouement. Au sein de la Clinique médicale
-                  Saint-Viateur, nous considérons que soigner est bien plus
-                  qu&apos;une profession : c&apos;est une véritable vocation,
-                  portée par l&apos;amour du prochain et une rigueur
-                  scientifique sans compromis.
-                </p>
-                <p>
-                  Pour répondre efficacement aux attentes des populations et
-                  nous hisser au rang de structure sanitaire
-                  d&apos;excellence, la Clinique Médicale Saint Viateur
-                  continue d&apos;améliorer son plateau technique afin de
-                  maintenir sa place au rang des structures
-                  d&apos;excellence.
-                </p>
-                <div className="director-signature">
-                  <strong>— La Direction Générale</strong>
-                </div>
-                <Link href={pathFor("mot-direction")} className="btn btn-outline btn-sm">
-                  Lire la suite
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <Reveal index={0}>
-            <div className="section-header">
-              <span className="eyebrow">Actualités</span>
-              <h2>Ce qui se passe à la clinique</h2>
-            </div>
-          </Reveal>
-          <div className="news-grid">
-            {newsPreview.map((item, i) => (
-              <Reveal index={i + 1} key={item.id}>
-                <div className="card news-card">
-                  <div className="photo-placeholder">
-                    {item.photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.photo_url} alt={item.title} />
-                    ) : (
-                      `Photo — ${item.title}`
-                    )}
-                  </div>
-                  <span className="date">{formatPublishedDate(item.published_date)}</span>
-                  <strong style={{ display: "block", marginTop: 6 }}>{item.title}</strong>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>
