@@ -1,6 +1,7 @@
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { Reveal } from "@/app/components/Reveal";
+import { PageHero } from "@/app/components/PageHero";
 
 const DIRECTOR_MESSAGE = {
   paragraphs: [
@@ -18,22 +19,16 @@ export default function MotDirectionPage() {
     <>
       <Header active="mot-direction" />
 
-      <section className="page-hero">
-        <div className="blob blob-a" />
-        <div className="blob blob-c" />
-        <Reveal index={0}>
-          <div>
-            <span className="eyebrow">À propos de nous</span>
-            <h1>
-              Mot de la <em>direction</em>
-            </h1>
-            <p>
-              Un message de notre direction sur l&apos;engagement et les
-              valeurs de la Clinique Médicale Saint Viateur.
-            </p>
-          </div>
-        </Reveal>
-      </section>
+      <PageHero
+        eyebrow="À propos de nous"
+        title={
+          <>
+            Mot de la <em>direction</em>
+          </>
+        }
+        description="Un message de notre direction sur l'engagement et les valeurs de la Clinique Médicale Saint Viateur."
+        videoSrc="/hero-medoc-home.mp4"
+      />
 
       <section className="section">
         <div className="container">
